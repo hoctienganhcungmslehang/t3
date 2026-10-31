@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Reading Gamification - Ms Lê Hằng English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #8854C0;
+            --purple-dark: #5e358c;
+            --yellow: #FDCB6E;
+            --yellow-dark: #e1a93b;
+            --teal: #00C9A7;
+            --teal-dark: #00967d;
+            --green: #00D26A;
+            --green-dark: #009e4f;
+            --red: #FF4757;
+            --red-dark: #cc2936;
+            --pastel-hl: #b388eb;
+            --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --smooth: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Quicksand', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: #2d3436;
+            background: linear-gradient(-45deg, #8854C0, #FDCB6E, #00C9A7, #ff9ff3, #54a0ff);
+            background-size: 350% 350%;
+            animation: smoothGradient 18s ease infinite;
+            position: relative;
+        }
+
+        @keyframes smoothGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* GPU-Accelerated Floating SVG Pattern */
+        .bg-pattern {
+            position: fixed;
+            inset: -160px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.24;
+            will-change: transform;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='%23ffffff'%3E%3Cpolygon points='25,8 31,19 43,21 34,29 36,41 25,35 14,41 16,29 7,21 19,19'/%3E%3Ccircle cx='120' cy='35' r='6'/%3E%3Ccircle cx='120' cy='22' r='5'/%3E%3Ccircle cx='120' cy='48' r='5'/%3E%3Ccircle cx='107' cy='35' r='5'/%3E%3Ccircle cx='133' cy='35' r='5'/%3E%3Cpath d='M30,118 C19,118 14,108 14,96 L14,82 L22,90 L38,90 L46,82 L46,96 C46,108 41,118 30,118 Z'/%3E%3Cpath d='M105,125 A12,12 0 0,1 118,110 A15,15 0 0,1 145,112 A10,10 0 0,1 148,130 L105,130 Z'/%3E%3C/g%3E%3C/svg%3E");
+            animation: driftPattern 24s linear infinite;
+        }
+
+        @keyframes driftPattern {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(160px, 160px, 0); }
+        }
+
+        /* Top Bar */
+        header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-bottom: 3px solid var(--purple);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .brand-box h4 {
+            font-size: 0.95rem;
+            color: var(--purple);
+            font-weight: 900;
+        }
+
+        .brand-box p {
+            font-size: 0.8rem;
+            color: #d63031;
+            font-weight: 800;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Ultra-Smooth 3D Gamification Buttons */
+        .btn-3d {
+            border: none;
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 0.86rem;
+            cursor: pointer;
+            color: #fff;
+            background: var(--purple);
+            box-shadow: 0 5px 0 var(--purple-dark), 0 6px 12px rgba(0,0,0,0.12);
+            transition: transform 0.22s var(--spring), box-shadow 0.22s var(--spring), filter 0.2s;
+            will-change: transform;
+            user-select: none;
+        }
+
+        .btn-3d:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 7px 0 var(--purple-dark), 0 10px 18px rgba(0,0,0,0.16);
+            filter: brightness(1.05);
+        }
+
+        .btn-3d:active:not(:disabled) {
+            transform: translateY(3px) scale(0.98);
+            box-shadow: 0 2px 0 var(--purple-dark);
+        }
+
+        .btn-3d.teal {
+            background: var(--teal);
+            box-shadow: 0 5px 0 var(--teal-dark), 0 6px 12px rgba(0,0,0,0.12);
+        }
+        .btn-3d.teal:hover:not(:disabled) { box-shadow: 0 7px 0 var(--teal-dark); }
+        .btn-3d.teal:active:not(:disabled) { box-shadow: 0 2px 0 var(--teal-dark); }
+
+        .btn-3d.yellow {
+            background: #f39c12;
+            box-shadow: 0 5px 0 #c87f0a, 0 6px 12px rgba(0,0,0,0.12);
+        }
+        .btn-3d.yellow:hover:not(:disabled) { box-shadow: 0 7px 0 #c87f0a; }
+        .btn-3d.yellow:active:not(:disabled) { box-shadow: 0 2px 0 #c87f0a; }
+
+        .timer-pill {
+            font-size: 1.15rem;
+            font-weight: 900;
+            background: #fff8e7;
+            color: #2d3436;
+            padding: 5px 14px;
+            border-radius: 14px;
+            border: 2px solid var(--yellow);
+            min-width: 88px;
+            text-align: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .reminder-box {
+            margin-top: 6px;
+            background: linear-gradient(90deg, #fff3cd, #ffeaa7);
+            border: 2px dashed #e17055;
+            border-radius: 12px;
+            padding: 6px 14px;
+            font-size: 0.79rem;
+            color: #b71540;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            padding: 6px 14px;
+            border-radius: 14px;
+            border: 2px solid var(--purple);
+            background: #fff;
+            color: var(--purple);
+            font-weight: 800;
+            font-size: 0.84rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(136, 84, 192, 0.2);
+            transition: all 0.25s var(--spring);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--purple);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--purple-dark);
+        }
+
+        .progress-wrap {
+            flex: 1;
+            max-width: 340px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 13px;
+            background: #dfe6e9;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #b2bec3;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--teal), var(--green));
+            transition: width 0.45s var(--smooth);
+        }
+
+        /* Split Screen */
+        .split-view {
+            position: relative;
+            z-index: 5;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 12px 18px;
+            overflow: hidden;
+        }
+
+        .pane {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 22px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+            padding: 20px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            border: 3px solid #ffffff;
+        }
+
+        .pane::-webkit-scrollbar { width: 8px; }
+        .pane::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        .pane::-webkit-scrollbar-thumb:hover { background: var(--purple); }
+
+        /* Passage Styling */
+        .passage-header {
+            font-size: 1.28rem;
+            font-weight: 900;
+            color: var(--purple);
+            text-align: center;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f2f6;
+        }
+
+        .para-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            border: 2px solid #edf2f7;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: transform 0.3s var(--smooth), border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .para-card.located {
+            border-color: var(--red);
+            background: #fff9fa;
+            box-shadow: 0 0 0 4px rgba(255, 71, 87, 0.2);
+            transform: scale(1.01);
+        }
+
+        .para-tag {
+            display: inline-block;
+            background: var(--purple);
+            color: #fff;
+            font-weight: 900;
+            padding: 2px 10px;
+            border-radius: 9px;
+            margin-right: 8px;
+            font-size: 0.88rem;
+        }
+
+        .para-body {
+            font-size: 0.98rem;
+            line-height: 1.68;
+            color: #2d3436;
+        }
+
+        .trans-toggle {
+            margin-top: 10px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            color: #475569;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s var(--spring);
+        }
+
+        .trans-toggle:hover {
+            background: var(--yellow);
+            color: #1e293b;
+            border-color: var(--yellow-dark);
+            transform: scale(1.04);
+        }
+
+        /* Smooth Accordion for Translation & Explanation */
+        .smooth-collapse {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s var(--smooth), opacity 0.3s ease, margin-top 0.3s ease;
+        }
+
+        .smooth-collapse.open {
+            max-height: 1200px;
+            opacity: 1;
+            margin-top: 12px;
+        }
+
+        .trans-content {
+            padding: 12px 14px;
+            background: #f8f5ff;
+            border-left: 4px solid var(--purple);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #334155;
+            line-height: 1.58;
+        }
+
+        /* Pastel Purple Highlight */
+        .pastel-hl {
+            background-color: var(--pastel-hl);
+            color: #ffffff !important;
+            padding: 1px 5px;
+            border-radius: 6px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(179,136,235,0.3);
+        }
+
+        /* Glossary Table */
+        .glossary-wrap {
+            margin-top: 24px;
+            border-top: 3px dashed var(--purple);
+            padding-top: 16px;
+        }
+
+        .glossary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .glossary-table th {
+            background: var(--purple);
+            color: #fff;
+            padding: 9px 10px;
+            text-align: left;
+        }
+
+        .glossary-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .glossary-table tr:nth-child(even) { background: #faf8ff; }
+
+        /* Question Cards */
+        .q-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 6px 0 #cbd5e1, 0 8px 16px rgba(0,0,0,0.04);
+            transition: transform 0.25s var(--smooth), border-color 0.25s;
+        }
+
+        .q-title {
+            font-weight: 800;
+            font-size: 0.96rem;
+            margin-bottom: 12px;
+            line-height: 1.52;
+        }
+
+        .q-badge {
+            display: inline-block;
+            background: var(--teal);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 10px;
+            margin-right: 8px;
+            font-weight: 900;
+        }
+
+        /* ABCD Options Grid (Matching image_c19851.png) */
+        .abcd-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .opt-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 16px;
+            border: 2px solid #cbd5e1;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-align: left;
+            box-shadow: 0 5px 0 #cbd5e1;
+            transition: transform 0.2s var(--spring), box-shadow 0.2s var(--spring), background 0.2s, border-color 0.2s;
+            will-change: transform;
+        }
+
+        .opt-card:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.025);
+            border-color: var(--purple);
+            box-shadow: 0 7px 0 #b8c4d4;
+        }
+
+        .opt-card:active:not(:disabled) {
+            transform: translateY(3px) scale(0.98);
+            box-shadow: 0 2px 0 #cbd5e1;
+        }
+
+        .opt-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .opt-char {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .opt-card.correct {
+            border-color: var(--green);
+            background: #e8f8f0;
+            color: #007a3d;
+            box-shadow: 0 5px 0 var(--green-dark);
+        }
+        .opt-card.correct .opt-char {
+            background: var(--green);
+            color: #fff;
+        }
+
+        .opt-card.wrong {
+            border-color: var(--red);
+            background: #fff0f1;
+            color: #c0202e;
+            box-shadow: 0 5px 0 var(--red-dark);
+            animation: smoothShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+        .opt-card.wrong .opt-char {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .pill-right {
+            background: var(--green);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 900;
+            margin-left: 6px;
+            white-space: nowrap;
+        }
+
+        @keyframes smoothShake {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            20%, 60% { transform: translate3d(-6px, 0, 0); }
+            40%, 80% { transform: translate3d(6px, 0, 0); }
+        }
+
+        /* Select & Input Controls */
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .game-select, .game-input {
+            padding: 9px 14px;
+            border-radius: 14px;
+            border: 2px solid #cbd5e1;
+            font-size: 0.92rem;
+            font-weight: 700;
+            outline: none;
+            background: #fff;
+            box-shadow: 0 4px 0 #cbd5e1;
+            transition: all 0.2s var(--smooth);
+        }
+
+        .game-select:focus, .game-input:focus {
+            border-color: var(--purple);
+            box-shadow: 0 4px 0 var(--purple);
+        }
+
+        .game-select.correct, .game-input.correct {
+            border-color: var(--green);
+            background: #e8f8f0;
+            color: #007a3d;
+            box-shadow: 0 4px 0 var(--green-dark);
+        }
+
+        .game-select.wrong, .game-input.wrong {
+            border-color: var(--red);
+            background: #fff0f1;
+            color: #c0202e;
+            box-shadow: 0 4px 0 var(--red-dark);
+            animation: smoothShake 0.45s ease;
+        }
+
+        /* Explanation Box (Matching image_c19851.png) */
+        .exp-box {
+            border: 2px dashed #a29bfe;
+            border-radius: 18px;
+            padding: 16px;
+            background: #fcfbff;
+        }
+
+        .exp-head {
+            color: var(--red);
+            font-weight: 900;
+            font-size: 0.92rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .step1 {
+            background: #fff8e7;
+            border: 1px solid #ffeaa7;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .step2-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 8px 0 10px;
+        }
+
+        .step2-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            line-height: 1.42;
+        }
+
+        .badge-dist {
+            background: #ffe0e3;
+            color: #d63031;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.72rem;
+            margin: 0 4px;
+        }
+
+        .badge-ans {
+            background: #d4f8e8;
+            color: #008a45;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.72rem;
+            margin: 0 4px;
+        }
+
+        .step3 {
+            background: #eafaf1;
+            border: 1px solid #a3e4d7;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 0.86rem;
+            color: #0e6251;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .step4 {
+            background: #fdedec;
+            border: 1px solid #f5b7b1;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 0.86rem;
+            color: #922b21;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .evidence-meta {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 9px 12px;
+            font-size: 0.84rem;
+            line-height: 1.52;
+        }
+
+        /* Confetti & Modals */
+        #confetti {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 26px;
+            max-width: 540px;
+            width: 100%;
+            padding: 26px;
+            text-align: center;
+            border: 4px solid var(--purple);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: modalPop 0.35s var(--spring);
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.75); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .band-badge {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--teal));
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 14px auto;
+            box-shadow: 0 8px 20px rgba(136,84,192,0.35);
+        }
+
+        @media (max-width: 900px) {
+            body { height: auto; overflow: auto; }
+            .split-view { grid-template-columns: 1fr; overflow: visible; }
+            .abcd-grid, .step2-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+<canvas id="confetti"></canvas>
+
+<header>
+    <div class="header-top">
+        <div class="brand-box">
+            <h4>Giáo viên tạo: Ms Lê Hằng English</h4>
+            <p>Đăng kí học tiếng anh 1-12, IELTS vui lòng liên hệ Ms Lê Hằng, zalo 0584 965 348.</p>
+        </div>
+
+        <div class="control-group">
+            <button id="timer-btn" class="btn-3d teal" onclick="toggleTimer()">⏱️ BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+            <div id="timer-val" class="timer-pill">20:00</div>
+            <button class="btn-3d" onclick="openCustomTextModal()" title="Dán văn bản gốc nếu muốn">📋 Dán văn bản gốc</button>
+            <button class="btn-3d yellow" onclick="submitExam()">🏆 NỘP BÀI</button>
+        </div>
+    </div>
+
+    <div class="reminder-box">
+        <div>
+            <strong>⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</strong>
+            Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên. Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích! <strong>- Kéo tới đâu, làm tới đó! *</strong>
+        </div>
+        <span style="background:#fff; padding:4px 10px; border-radius:10px; font-weight:800; white-space:nowrap;">🖍️ Bôi đen từ để Highlight Tím</span>
+    </div>
+
+    <div class="nav-bar">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">📖 Passage 1 (Q1–13)</button>
+            <button class="tab-btn" onclick="switchTab(1)">📖 Passage 2 (Q14–26)</button>
+            <button class="tab-btn" onclick="switchTab(2)">📖 Passage 3 (Q27–40)</button>
+        </div>
+        <div class="progress-wrap">
+            <span style="font-size:0.82rem; font-weight:900;">Tiến độ: <span id="prog-label">0/40 (0%)</span></span>
+            <div class="progress-track">
+                <div id="prog-bar" class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="split-view">
+    <div class="pane" id="left-pane">
+        <div id="passage-area"></div>
+        <div class="glossary-wrap" id="glossary-area"></div>
+    </div>
+
+    <div class="pane" id="right-pane">
+        <div id="questions-area"></div>
+        <div style="text-align:center; margin: 24px 0;">
+            <button class="btn-3d yellow" style="font-size:1.05rem; padding:12px 28px;" onclick="submitExam()">🎉 HOÀN THÀNH & NỘP BÀI CHẤM ĐIỂM 🎉</button>
+        </div>
+    </div>
+</div>
+
+<!-- Score Modal -->
+<div class="modal-overlay" id="score-modal">
+    <div class="modal-box">
+        <h2 style="color:var(--purple); font-weight:900;">BẢNG TỔNG KẾT ĐIỂM & BAND IELTS</h2>
+        <div class="band-badge">
+            <span style="font-size:0.75rem; font-weight:800;">IELTS BAND</span>
+            <strong id="res-band" style="font-size:2.3rem;">0.0</strong>
+        </div>
+        <p style="font-size:1.1rem; font-weight:800; margin-bottom:10px;">
+            Số câu đúng: <span id="res-count" style="color:var(--green);">0 / 40</span> (<span id="res-pct">0%</span>)
+        </p>
+        <div id="res-msg" style="background:#f8f5ff; border:2px dashed var(--purple); padding:14px; border-radius:14px; font-weight:700; margin-bottom:16px; line-height:1.5;"></div>
+        <button class="btn-3d teal" onclick="document.getElementById('score-modal').style.display='none'">Đóng & Xem kỹ Giải thích</button>
+    </div>
+</div>
+
+<!-- Custom Verbatim Text Modal -->
+<div class="modal-overlay" id="custom-modal">
+    <div class="modal-box" style="max-width:650px; text-align:left;">
+        <h3 style="color:var(--purple); margin-bottom:8px;">📋 Cập nhật văn bản đoạn đọc tùy chỉnh</h3>
+        <p style="font-size:0.84rem; margin-bottom:10px; color:#555;">Bạn có thể dán nguyên văn nội dung đoạn đọc của mình vào ô dưới đây (mỗi đoạn cách nhau bằng 1 dòng trống) để thay thế nhanh nội dung hiển thị của Passage hiện tại:</p>
+        <textarea id="custom-textarea" rows="8" style="width:100%; padding:10px; border-radius:12px; border:2px solid #cbd5e1; font-size:0.88rem; margin-bottom:12px;"></textarea>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn-3d" style="background:#64748b;" onclick="document.getElementById('custom-modal').style.display='none'">Hủy</button>
+            <button class="btn-3d teal" onclick="applyCustomText()">Lưu & Hiển thị ngay</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ==================== ZERO-LATENCY WEB AUDIO SYNTHESIZER ====================
+let audioCtx = null;
+function playFeedbackSound(correct) {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        if (correct) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, now);
+            osc.frequency.exponentialRampToValueAtTime(1174.66, now + 0.28);
+            gain.gain.setValueAtTime(0.22, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.35);
+        } else {
+            [340, 290, 230].forEach((f, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(f, now + i * 0.1);
+                gain.gain.setValueAtTime(0.2, now + i * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + (i + 1) * 0.1);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.1);
+                osc.stop(now + (i + 1) * 0.1);
+            });
+        }
+    } catch (e) {}
+}
+
+// ==================== 60FPS CONFETTI ENGINE ====================
+const cvs = document.getElementById('confetti');
+const ctx = cvs.getContext('2d');
+let confettiList = [];
+let animId = null;
+
+function resizeCvs() {
+    cvs.width = window.innerWidth;
+    cvs.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCvs);
+resizeCvs();
+
+function fireConfetti() {
+    const palette = ['#00D26A', '#FDCB6E', '#8854C0', '#00C9A7', '#FF4757', '#54a0ff'];
+    for (let i = 0; i < 50; i++) {
+        confettiList.push({
+            x: window.innerWidth * 0.65 + (Math.random() - 0.5) * 180,
+            y: window.innerHeight * 0.45,
+            vx: (Math.random() - 0.5) * 13,
+            vy: Math.random() * -12 - 4,
+            s: Math.random() * 7 + 5,
+            c: palette[Math.floor(Math.random() * palette.length)],
+            a: Math.random() * 360,
+            va: (Math.random() - 0.5) * 12
+        });
+    }
+    if (!animId) animId = requestAnimationFrame(renderConfetti);
+}
+
+function renderConfetti() {
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    for (let i = confettiList.length - 1; i >= 0; i--) {
+        const p = confettiList[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.42;
+        p.a += p.va;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.a * Math.PI / 180);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s);
+        ctx.restore();
+        if (p.y > cvs.height) confettiList.splice(i, 1);
+    }
+    if (confettiList.length > 0) {
+        animId = requestAnimationFrame(renderConfetti);
+    } else {
+        animId = null;
+    }
+}
+
+function shuffleArray(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+// ==================== PASSAGES & 50 WORDS GLOSSARY PER PASSAGE ====================
+const passages = [
+    {
+        title: "PASSAGE 1: THE FORMATION OF CONTINENTS AND THE EVOLUTION OF SPECIES",
+        paras: [
+            { id: "p1-A", tag: "A", en: "The ancient existence of the Pangean supercontinent alongside the Panthalassa and Tethys Oceans carries deep implications for the evolution of multicellular organisms on Earth. Scientists of the 19th century were unaware of these continental formations, making their deductions even more impressive. Quite independently, Charles Darwin and his younger contemporary Alfred Russel Wallace both reached the conclusion that life evolved by natural selection, an inspiration Wallace later described in My Life.", vi: "Sự tồn tại cổ xưa của siêu lục địa Pangea cùng đại dương Panthalassa và Tethys mang ý nghĩa sâu sắc đối với sự tiến hóa của sinh vật đa bào. Các nhà khoa học thế kỷ 19 chưa biết đến những cấu trúc này, khiến suy luận của họ càng đáng kinh ngạc. Hoạt động độc lập với nhau, Charles Darwin và Alfred Russel Wallace đều kết luận rằng sự sống tiến hóa nhờ chọn lọc tự nhiên." },
+            { id: "p1-B", tag: "B", en: "Why do some species perish while others endure? On the whole, the best fit lived: the healthiest escaped disease; the strongest, swiftest, or most cunning evaded enemies; and the finest hunters survived famine. This self-acting process inevitably improved the race because in every generation the inferior would be eliminated and the superior would remain—meaning the fittest would survive.", vi: "Tại sao một số loài chết đi còn số khác lại sống sót? Nhìn chung, những cá thể thích nghi tốt nhất sẽ sống sót: kẻ khỏe nhất thoát bệnh tật; kẻ mạnh nhất, nhanh nhất hoặc khôn ngoan nhất thoát kẻ thù; thợ săn giỏi nhất vượt qua nạn đói. Quá trình tự vận hành này cải thiện giống loài vì ở mỗi thế hệ, kẻ yếu bị đào thải và kẻ vượt trội trụ lại—tức là kẻ thích nghi nhất sẽ sinh tồn." },
+            { id: "p1-C", tag: "C", en: "Both Darwin's and Wallace's concepts of natural selection were influenced by Thomas Malthus's Principles of Population. Yet their conclusions resulted directly from personal observations of flora and fauna in widely separated regions: Darwin aboard the Beagle (especially the Galapagos Islands in 1835), and Wallace during his 1850s travels in the Amazon Basin and the Indonesian-Australian Archipelago.", vi: "Ý tưởng của cả Darwin và Wallace đều chịu ảnh hưởng từ sách Nguyên lý Dân số của Thomas Malthus. Tuy nhiên, kết luận của họ là kết quả trực tiếp từ quan sát thực địa ở các vùng địa lý cách biệt: Darwin trên tàu Beagle (đặc biệt là quần đảo Galapagos năm 1835), và Wallace tại lưu vực Amazon cùng quần đảo Indonesia-Úc những năm 1850." },
+            { id: "p1-D", tag: "D", en: "Darwin had been documenting his natural selection ideas for years when he received a paper on the same subject from Wallace asking for his opinion and help in getting it published. In July 1858, Darwin's close friends Charles Lyell and J. D. Hooker pressed Darwin to present his conclusions so he would not lose priority to an unknown naturalist. Presiding over the Linnean Society meeting in London, Lyell and Hooker explained how both gentlemen had independently conceived the same ingenious theory.", vi: "Darwin đã ghi chép ý tưởng về chọn lọc tự nhiên trong nhiều năm trước khi nhận được bài viết cùng chủ đề từ Wallace. Tháng 7/1858, hai người bạn thân Charles Lyell và J. D. Hooker đã thúc giục (pressed) Darwin công bố kết luận để không mất quyền ưu tiên. Chủ trì cuộc họp tại Hiệp hội Linnean, Lyell và Hooker giải thích cách hai ông đã độc lập nghĩ ra cùng một lý thuyết tài tình." },
+            { id: "p1-E", tag: "E", en: "Both researchers realized that the anomalous distribution of species in specific regions had profound evolutionary significance. Subsequently, Darwin spent the rest of his days in near seclusion writing about the origin of species. In contrast, Wallace applied himself to biogeography—the study of the pattern and distribution of species—resulting in the 1876 publication of his massive two-volume work, The Geographical Distribution of Animals.", vi: "Cả hai đều nhận ra sự phân bố bất thường của các loài mang ý nghĩa tiến hóa sâu sắc. Sau đó, Darwin sống gần như ẩn dật để viết về nguồn gốc các loài. Ngược lại, Wallace dốc sức cho ngành địa sinh học, dẫn đến việc xuất bản bộ sách đồ sộ hai tập Phân bố Địa lý của Động vật vào năm 1876." },
+            { id: "p1-F", tag: "F", en: "Wallace was a modest, persistent researcher working in arduous climates across the Malay Archipelago. One key outcome of his work was identifying a distinct faunal boundary, called 'Wallace's line,' between an Asian realm of animals (Java, Borneo, the Philippines) and an Australian realm (New Guinea and Australia). He was uncertain about the island of Celebes midway between the two groups because 200 million years ago East and West Celebes lay on opposite shores of the Tethys Ocean, separating Laurasia-derived Asian fauna from Gondwana-derived Australian fauna.", vi: "Wallace đã làm việc kiên trì ở quần đảo Mã Lai khắc nghiệt. Một kết quả quan trọng là ông đã xác định được ranh giới động vật rõ rệt gọi là 'Đường Wallace' (Wallace's line) giữa vương quốc động vật châu Á và châu Úc. Ông từng phân vân về đảo Celebes nằm giữa hai vùng vì 200 triệu năm trước Đông và Tây Celebes nằm ở hai bờ đối diện của đại dương Tethys." },
+            { id: "p1-G", tag: "G", en: "In Origin of Continents and Oceans, Wegener quoted extensively from Wallace's work. Wallace had identified three clear divisions of Australian animals supporting Wegener's theory of continental displacement. Wallace showed that animals long established in southwestern Australia had an affinity with animals in South Africa, Madagascar, India, and Ceylon, while marsupials linked Australia to South America. Wegener concluded that the broadly accepted 'landbridge' theory could not account for this distribution and only his theory of continental drift could explain it.", vi: "Trong sách Nguồn gốc Lục địa và Đại dương, Wegener trích dẫn nhiều từ Wallace. Wallace đã chỉ ra động vật ở tây nam nước Úc có mối quan hệ họ hàng (affinity) với động vật ở Nam Phi, Madagascar, Ấn Độ và Ceylon. Wegener kết luận rằng thuyết 'cầu nối đất liền' không thể giải thích sự phân bố này và chỉ có thuyết trôi dạt lục địa (continental drift) của ông mới giải thích được." },
+            { id: "p1-H", tag: "H", en: "The theory that Wegener dismissed in preference to his own proposed that plants and animals had once migrated across now-submerged intercontinental landbridges. In 1885, leading European geologist Eduard Suess theorized that as the rigid Earth cools, its upper crust shrinks and wrinkles like the withering skin of an aging apple, suggesting that seas and oceans now fill the wrinkles between once-contiguous plateaus.", vi: "Lý thuyết mà Wegener bác bỏ cho rằng thực vật và động vật từng di cư (migrated) qua các cầu nối đất liền liên lục địa nay đã chìm. Năm 1885, nhà địa chất Eduard Suess đưa ra giả thuyết rằng khi Trái Đất nguội đi, lớp vỏ trên co lại và nhăn nheo như lớp vỏ héo hon (withering skin) của một quả táo già." },
+            { id: "p1-I", tag: "I", en: "Today, we know that we live on a dynamic Earth with shifting, colliding, and separating tectonic plates, not a 'withering skin,' and the main debate in biogeography has shifted. The discussion now concerns 'dispersalism' versus 'vicarianism'—unrestricted radiation of species on an extensive landmass on one hand, and isolation of species within natural barriers such as islands, lakes, or shallow seas on the other.", vi: "Ngày nay, chúng ta biết mình đang sống trên một Trái Đất năng động với các mảng kiến tạo (tectonic plates) dịch chuyển liên tục chứ không phải 'lớp vỏ héo hon'. Cuộc tranh luận trong địa sinh học đã chuyển sang hai thuật ngữ: 'dispersalism' (phát tán) và 'vicarianism' (cách ly địa lý)." }
+        ],
+        vocab: [
+            ["supercontinent","n","siêu lục địa","massive landmass"],["profound","adj","sâu sắc","deep"],["implication","n","hệ quả, hàm ý","consequence"],["multicellular","adj","đa bào","many-celled"],["deduction","n","suy luận","inference"],["contemporary","n","người cùng thời","peer"],["natural selection","n.p","chọn lọc tự nhiên","selection by nature"],["cunning","adj","khôn ngoan","clever"],["famine","n","nạn đói","starvation"],["inevitably","adv","tất yếu","unavoidably"],["inferior","adj","yếu kém","weaker"],["superior","adj","vượt trội","dominant"],["the fittest","n","kẻ thích nghi nhất","the most adaptable"],["archipelago","n","quần đảo","island chain"],["document","v","ghi chép tư liệu","record"],["press","v","thúc giục","urge"],["priority","n","quyền ưu tiên","precedence"],["preside over","v.p","chủ trì","chair"],["ingenious","adj","tài tình","brilliant"],["anomalous","adj","bất thường","strange"],["seclusion","n","sự ẩn dật","isolation"],["biogeography","n","địa sinh học","species distribution study"],["arduous","adj","gian khổ, khắc nghiệt","grueling"],["terrain","n","địa hình","topography"],["specimen","n","mẫu vật","sample"],["faunal boundary","n.p","ranh giới động vật","Wallace's line"],["realm","n","vương quốc, khu vực","domain"],["affinity","n","quan hệ họ hàng","close relationship"],["counterpart","n","bản sao tương ứng","equivalent"],["demarcation","n","phân định ranh giới","boundary"],["dilemma","n","tiến thoái lưỡng nan","uncertainty"],["collide","v","va chạm","crash"],["remnant","n","tàn tích","leftover"],["displacement","n","sự dịch chuyển","drift"],["marsupial","n","thú có túi","pouched mammal"],["monotreme","n","thú đơn huyệt","egg-laying mammal"],["account for","v.p","giải thích cho","explain"],["dismiss","v","bác bỏ","reject"],["migrate","v","di cư","move intercontinentally"],["submerged","adj","chìm dưới nước","underwater"],["intercontinental","adj","liên lục địa","between continents"],["rigid","adj","rắn chắc","stiff"],["crust","n","vỏ Trái Đất","outer layer"],["shrink","v","co lại","contract"],["wrinkle","n/v","nếp nhăn","crease"],["withering skin","n.p","lớp vỏ héo hon","shriveling skin"],["contiguous","adj","liền kề","adjacent"],["tectonic plates","n.p","mảng kiến tạo","moving plates"],["dispersalism","n","thuyết phát tán","species radiation"],["vicarianism","n","thuyết cách ly địa lý","barrier isolation"]
+        ]
+    },
+    {
+        title: "PASSAGE 2: DEMYSTIFYING YAWN",
+        paras: [
+            { id: "p2-A", tag: "A", en: "When a researcher began investigating yawning in the 1980s, it was difficult to convince students of the merits of 'yawning science.' Though quirky, studying human yawning was a logical extension of developmental neuroscience research, such as papers on avian wing-flapping. As a neurobehavioral question, there is little difference between the wing-flapping of birds and the face and body flapping of human yawners.", vi: "Khi một nhà khoa học bắt đầu nghiên cứu việc ngáp vào thập niên 1980, rất khó để thuyết phục sinh viên về giá trị của 'khoa học tiếng ngáp'. Tuy kỳ lạ, đây là sự mở rộng hợp lý từ nghiên cứu thần kinh học phát triển, tương tự hành vi vỗ cánh ở loài chim." },
+            { id: "p2-B", tag: "B", en: "Yawning is an ancient, primitive act. Humans do it even before they are born, opening wide in the womb. Some snakes unhinge their jaws to do it, and one species of penguins yawns as part of mating. Only now are researchers understanding why we yawn and why we yawn back. Professor Steven Platek at Drexel University studies contagious yawning, something done only by people and other primates.", vi: "Ngáp là một hành vi cổ xưa, nguyên thủy (bẩm sinh). Con người ngáp ngay từ khi còn trong bụng mẹ. Một số loài rắn trật khớp hàm để ngáp, và một loài chim cánh cụt ngáp khi giao phối. Giáo sư Steven Platek tại Đại học Drexel chuyên nghiên cứu hành vi ngáp lây lan ở người và linh trưởng." },
+            { id: "p2-C", tag: "C", en: "In his first experiment, Platek used a psychological test to rank people on their empathic feelings. He found that participants who did not score high on compassion did not yawn back. 'We literally had people saying, \"Why am I looking at people yawning?\"' Professor Platek said. 'It just had no effect.'", vi: "Trong thí nghiệm đầu tiên, Platek dùng bài kiểm tra tâm lý để xếp hạng mức độ đồng cảm. Những người điểm thấp về lòng trắc ẩn đã không ngáp lại. Nhiều người thậm chí hỏi: 'Tại sao tôi lại phải nhìn người ta ngáp?' vì video không có tác dụng gì với họ." },
+            { id: "p2-D", tag: "D", en: "For his second experiment, he put 10 students in a magnetic resonance imaging (MRI) machine as they watched video tapes of people yawning. The part of the brain which reacted was the part scientists believe controls empathy—the posterior cingulate, in the brain's middle rear. 'I think it's a good indicator of a state of mind,' said Professor Platek. 'It's also a good indicator if you're empathizing with me and paying attention.'", vi: "Trong thí nghiệm thứ hai, ông đưa 10 sinh viên vào máy chụp MRI khi xem video người khác ngáp. Vùng não phản ứng là vỏ não đai sau—nơi kiểm soát sự đồng cảm. Platek cho biết ngáp là một chỉ báo tốt cho thấy bạn đang đồng cảm (empathizing) và chú ý lắng nghe (paying attention)." },
+            { id: "p2-E", tag: "E", en: "His third experiment studies yawning in those with brain disorders like autism and schizophrenia. Meanwhile, psychology professor Robert Provine at the University of Maryland found the basic yawn lasts about six seconds and they come in bouts with an interval of about 68 seconds. Men and women yawn or half-yawn equally often, but men are significantly less likely to cover their mouths, which may indicate complex distinction in genders. Furthermore, yawning may be coordinated within the hypothalamus of the brain, the area that also controls breathing.", vi: "Thí nghiệm thứ ba nghiên cứu người mắc chứng tự kỷ và tâm thần phân liệt. Giáo sư tâm lý Robert Provine phát hiện một cái ngáp cơ bản kéo dài khoảng 6 giây và lặp lại theo đợt với khoảng nghỉ (interval) 68 giây. Nam và nữ ngáp ngang nhau nhưng nam ít che miệng hơn, cho thấy sự khác biệt phức tạp (complex distinction) giữa các giới. Ngoài ra, tiếng ngáp được điều phối ở vùng dưới đồi—nơi cũng kiểm soát việc hô hấp (breathing)." },
+            { id: "p2-F", tag: "F", en: "Yawning and stretching also share properties and may be performed together as parts of a global motor complex. But they do not always co-occur: people usually yawn when we stretch, but we don't always stretch when we yawn, especially before bedtime. Studies by Visser and Prechtl in the early 1980s charting fetal movement using ultrasound observed a link between yawning and stretching as early as the end of the first prenatal trimester.", vi: "Ngáp và vươn vai có chung đặc tính nhưng không phải lúc nào cũng xảy ra cùng nhau (do not always co-occur). Nghiên cứu siêu âm bào thai của Visser và Prechtl đầu thập niên 1980 đã tìm thấy mối liên hệ giữa ngáp và vươn vai (stretching) ngay từ cuối 3 tháng đầu thai kỳ (first prenatal trimester)." },
+            { id: "p2-G", tag: "G", en: "The most extraordinary demonstration of the yawn-stretch linkage occurs in many people paralyzed on one side of their body because of brain damage caused by a stroke. British neurologist Sir Francis Walshe noted in 1923 that when these hemiplegics yawn, their otherwise paralyzed arm rises and flexes automatically in an 'associated response.' It is not known whether the associated response is a positive prognosis for recovery, nor whether yawning is therapeutic for prevention of muscular atrophy.", vi: "Minh chứng phi thường nhất của liên kết ngáp-vươn vai xảy ra ở những người bị liệt nửa người do tổn thương não (brain damage) bởi đột quỵ (stroke): khi họ ngáp, cánh tay bị liệt tự động nâng lên. Tuy nhiên, vẫn chưa rõ (not known) liệu phản ứng này có phải là dấu hiệu tích cực cho sự hồi phục hay không." },
+            { id: "p2-H", tag: "H", en: "Clinical neurology offers other surprises. Some patients with 'locked-in' syndrome, who are almost totally deprived of the ability to move voluntarily, can yawn normally. The neural circuits for spontaneous yawning must exist in the brain stem near respiratory centers, whereas the multiplicity of stimuli of contagious yawning, by contrast, implicates many higher brain regions.", vi: "Thần kinh học lâm sàng còn mang lại bất ngờ khác: bệnh nhân mắc hội chứng 'khóa trong' mất khả năng vận động tự chủ vẫn ngáp bình thường. Mạch thần kinh ngáp tự phát nằm ở thân não, trong khi các kích thích của ngáp lây lan lại liên quan đến nhiều vùng não cấp cao hơn (higher brain regions)." }
+        ],
+        vocab: [
+            ["demystify","v","giải mã, làm sáng tỏ","clarify"],["merit","n","giá trị, phẩm chất","value"],["quirky","adj","kỳ lạ","unusual"],["neurobehavioral","adj","thần kinh hành vi","brain-behavior"],["primitive","adj","nguyên thủy, bẩm sinh","inherent / innate"],["womb","n","tử cung, bụng mẹ","uterus"],["unhinge","v","trật khớp hàm","dislocate"],["mating","n","sự giao phối","courtship"],["contagious","adj","có tính lây lan","infectious"],["primate","n","linh trưởng","ape and human order"],["empathic","adj","đồng cảm","empathetic"],["compassion","n","lòng trắc ẩn","sympathy"],["posterior cingulate","n.p","vỏ não đai sau","empathy brain area"],["indicator","n","chỉ báo","sign"],["empathize","v","thấu cảm","feel empathy"],["pay attention","v.p","chú ý lắng nghe","be attentive"],["autism","n","chứng tự kỷ","developmental disorder"],["schizophrenia","n","tâm thần phân liệt","mental disorder"],["bout","n","đợt, cơn","spell"],["interval","n","khoảng nghỉ giữa 2 lần","pause / gap"],["distinction","n","sự khác biệt","difference"],["hypothalamus","n","vùng dưới đồi","breathing control center"],["breathing","n","hô hấp, sự thở","respiration"],["motor complex","n.p","tổ hợp vận động","movement system"],["co-occur","v","xảy ra đồng thời","occur together"],["fetus","n","bào thai","unborn baby"],["ultrasound","n","siêu âm","sonography"],["prenatal trimester","n.p","3 tháng đầu thai kỳ","first 3 months of pregnancy"],["extraordinary","adj","phi thường","remarkable"],["paralyzed","adj","bị liệt","immobile"],["brain damage","n.p","tổn thương não","cerebral injury"],["stroke","n","đột quỵ","brain attack"],["hemiplegic","n","người liệt nửa người","one-side paralyzed patient"],["startled","adj","giật mình","surprised"],["mystified","adj","bối rối, kinh ngạc","puzzled"],["flex","v","co cơ, gập tay","bend"],["innervate","v","chi phối thần kinh","supply nerves"],["prognosis","n","tiên lượng","medical forecast"],["therapeutic","adj","có tính trị liệu","healing"],["atrophy","n","sự teo cơ","muscle wasting"],["locked-in syndrome","n.p","hội chứng khóa trong","paralysis condition"],["deprived of","adj.p","bị tước mất","lacking"],["voluntarily","adv","một cách tự chủ","consciously"],["spontaneous","adj","tự phát","automatic"],["brain stem","n.p","thân não","lower brain center"],["medulla oblongata","n.p","hành não","lowest brainstem part"],["multiplicity","n","sự đa dạng","variety"],["stimuli","n","tác nhân kích thích","triggers"],["implicate","v","cho thấy sự liên quan","underline / involve"],["higher brain regions","n.p","vùng não cấp cao","superior areas in the brain"]
+        ]
+    },
+    {
+        title: "PASSAGE 3: INCORRECT TERMINOLOGY IN SCIENCE",
+        paras: [
+            { id: "p3-A", tag: "A", en: "Science plays an increasingly significant role in people's lives, making the faithful communication of scientific developments more important than ever. Yet such communication is fraught with challenges that can easily distort discussions, leading to unnecessary confusion and misunderstandings.", vi: "Khoa học đóng vai trò ngày càng quan trọng trong cuộc sống của con người, khiến việc truyền đạt trung thực các phát triển khoa học trở nên quan trọng hơn bao giờ hết. Tuy nhiên, việc truyền đạt này đầy rẫy thách thức dễ làm sai lệch thảo luận, dẫn đến nhầm lẫn không đáng có." },
+            { id: "p3-B", tag: "B", en: "Some problems stem from the esoteric nature of current research and the difficulty of finding sufficiently faithful terminology. Abstraction and complexity are not signs that a scientific direction is wrong, but a tribute to human ingenuity. However, many of the biggest challenges for science reporting arise because in areas of evolving research, scientists themselves often only partly understand the full implications of any particular advance or development, such as global warming, cancer research, and diet studies.", vi: "Một số vấn đề bắt nguồn từ bản chất chuyên sâu của nghiên cứu. Tuy nhiên, nhiều thách thức lớn nhất đối với việc đưa tin khoa học nảy sinh vì trong các lĩnh vực đang phát triển, bản thân các nhà khoa học thường chỉ hiểu một phần (only partly understand) những tác động đầy đủ của một tiến bộ cụ thể." },
+            { id: "p3-C", tag: "C", en: "Ambiguous word choices are the source of some misunderstandings. Scientists often employ colloquial terminology, which they then assign a specific meaning that is impossible to fathom without proper training. The term 'relativity,' for example, is intrinsically misleading. Many interpret it to mean everything is relative, yet Einstein's theory is actually about finding an invariant description of physical phenomena. Einstein agreed his theory would have been better named 'Invarianten theory.'", vi: "Những lựa chọn từ ngữ (word choices) mơ hồ là nguồn gốc của một số hiểu lầm. Các nhà khoa học thường dùng thuật ngữ thông tục (colloquial terminology) rồi gán cho nó ý nghĩa chuyên biệt mà người không được đào tạo không thể hiểu thấu. Ví dụ, thuật ngữ 'thuyết tương đối' (relativity) được trích dẫn để minh họa cho việc thuật ngữ khoa học gây hiểu lầm." },
+            { id: "p3-D", tag: "D", en: "'The uncertainty principle' is another frequently abused term. It is sometimes interpreted as a limitation on observers and their ability to make measurements. But it is not about intrinsic limitations on any one particular measurement; it is about the inability to precisely measure particular pairs of quantities simultaneously.", vi: "'Nguyên lý bất định' là một thuật ngữ hay bị lạm dụng khác. Nó không phải là những giới hạn bản chất (intrinsic limitations) đối với bất kỳ một phép đo (measurement) cụ thể nào, mà là việc không thể đo chính xác các cặp đại lượng cùng lúc." },
+            { id: "p3-E", tag: "E", en: "Even the word 'theory' can be a problem. Unlike most people who use the word to describe a passing conjecture, physicists see theories as a definite physical framework embodied in fundamental assumptions and equations. Theories aren't necessarily shown to be correct or complete immediately. Even Einstein took the better part of a decade to develop the correct version of his theory of general relativity.", vi: "Ngay cả từ 'lý thuyết' cũng có thể là vấn đề. Các lý thuyết không nhất thiết được chứng minh là đúng hay hoàn chỉnh ngay lập tức; ngay cả Einstein cũng mất gần một thập kỷ để phát triển phiên bản hoàn chỉnh cho thuyết tương đối rộng (general relativity) của mình." },
+            { id: "p3-F", tag: "F", en: "'Global warming' is another example of problematic terminology. Climatologists predict more drastic fluctuations in temperature and rainfall—not necessarily that every place will be warmer. 'Global climate change' would have been a better name. Yet science sometimes transcends this limitation: remarkably, chemists were able to detail the precise chemical processes involved in the destruction of the ozone layer, making the evidence that chlorofluorocarbon gases (Freon, for example) were destroying the ozone layer indisputably.", vi: "'Nóng lên toàn cầu' (Global warming) thực chất chỉ sự biến động mạnh về nhiệt độ và lượng mưa chứ không phải nơi nào cũng ấm lên. Tuy nhiên, đôi khi khoa học sử dụng thuật ngữ và giải thích rất chuẩn xác, ví dụ điển hình là quá trình hóa học của khí Freon phá hủy tầng Ozone." },
+            { id: "p3-G", tag: "G", en: "A better understanding of mathematical significance would clarify many scientific discussions. For months, Harvard was tortured by empty debates over the relative intrinsic scientific abilities of men and women. One of the more amusing aspects of the discussion was that those who believed in the differences and those who didn't used the same evidence about gender-specific special ability. Furthermore, we must inculcate greater acceptance of indirect scientific evidence: information from an unmanned space mission is no less legitimate than information from one in which people are on board.", vi: "Trong nhiều tháng, Harvard bị cuốn vào cuộc tranh luận về năng lực khoa học giữa nam và nữ. Điều đáng ngạc nhiên và thú vị là cả hai phe ủng hộ và phản đối đều sử dụng cùng một dữ liệu/bằng chứng (used the same evidence). Ngoài ra, bằng chứng khoa học gián tiếp từ tàu vũ trụ không người lái có giá trị hợp pháp không kém gì (no less legitimate) bằng chứng trực tiếp." },
+            { id: "p3-H", tag: "H", en: "This doesn't mean never questioning an interpretation, nor equating indirect evidence with blind belief. Second, we might need different standards for evaluating science with urgent policy implications than research with purely theoretical value. Statistics and errors, which tell us the uncertainty in a measurement, give us the tools to evaluate new developments fairly.", vi: "Điều này không có nghĩa là tin mù quáng vào bằng chứng gián tiếp. Chúng ta cũng cần các tiêu chuẩn khác nhau cho khoa học có hàm ý chính sách khẩn cấp so với nghiên cứu lý thuyết thuần túy." },
+            { id: "p3-I", tag: "I", en: "But most importantly, people have to recognize that science can be complex. If we accept only simple stories, the description will necessarily be distorted. Most developments reflect work in progress, so the story is complex because no one yet knows the big picture.", vi: "Quan trọng nhất, mọi người phải nhận ra rằng khoa học rất phức tạp. Nếu chỉ chấp nhận những câu chuyện đơn giản, mô tả tất yếu sẽ bị bóp méo." }
+        ],
+        vocab: [
+            ["faithful","adj","trung thực, chuẩn xác","accurate"],["fraught with","adj.p","đầy rẫy","filled with"],["distort","v","bóp méo, làm sai lệch","twist"],["stem from","v.p","bắt nguồn từ","arise from"],["esoteric","adj","chuyên sâu khó hiểu","obscure"],["terminology","n","thuật ngữ","nomenclature"],["abstraction","n","sự trừu tượng","theoretical concept"],["ingenuity","n","sự tài trí, khéo léo","cleverness"],["implication","n","tác động, hệ quả","impact"],["spur","v","thúc đẩy","encourage"],["ambiguous","adj","mơ hồ, đa nghĩa","unclear"],["word choices","n.p","lựa chọn từ ngữ","phrasing"],["colloquial","adj","thông tục, đời thường","informal"],["fathom","v","hiểu thấu đáo","comprehend deeply"],["intrinsically","adv","về bản chất","inherently"],["misleading","adj","gây hiểu lầm","deceptive"],["invariant","adj","bất biến","unchanging"],["transcend","v","vượt qua","surpass"],["entrenched","adj","ăn sâu bám rễ","established"],["abuse","v","lạm dụng, dùng sai","misuse"],["intrinsic","adj","bản chất, nội tại","inherent"],["measurement","n","phép đo","quantification"],["simultaneously","adv","đồng thời","at once"],["conjecture","n","sự phỏng đoán","guess"],["entail","v","đòi hỏi, kéo theo","involve"],["embody","v","hiện thân, hàm chứa","incorporate"],["borne out","v.p","được chứng minh","confirmed"],["general relativity","n.p","thuyết tương đối rộng","Einstein's theory"],["encompassing","adj","bao quát","comprehensive"],["climatologist","n","nhà khí hậu học","climate expert"],["drastic","adj","mạnh mẽ, khốc liệt","extreme"],["fluctuation","n","sự biến động","variation"],["subvert","v","làm đảo lộn","undermine"],["indisputably","adv","không thể chối cãi","undeniably"],["tortured by","v.p","bị giày vò bởi","plagued by"],["substantial","adj","đáng kể","significant"],["inculcate","v","gieo vào, làm thấm nhuần","instill"],["indirect evidence","n.p","bằng chứng gián tiếp","secondary data"],["unmanned","adj","không người lái","crewless"],["legitimate","adj","hợp pháp, đáng tin cậy","reliable / valid"],["equate","v","đánh đồng","treat as equal"],["blind belief","n.p","niềm tin mù quáng","unquestioning faith"],["urgent","adj","khẩn cấp","pressing"],["go the extra distance","idiom","nỗ lực thêm","make extra effort"],["work in progress","n.p","công việc đang tiếp diễn","ongoing study"],["big picture","n.p","bức tranh toàn cảnh","overall view"],["comprehend","v","hiểu rõ","understand"],["advancement","n","sự tiến bộ","development"],["universal","adj","toàn cầu, phổ quát","everywhere"],["media coverage","n.p","đưa tin truyền thông","press reporting"]
+        ]
+    }
+];
+
+// ==================== ALL 40 QUESTIONS WITH 4-STEP EXPLANATIONS ====================
+const questions = [
+    // PASSAGE 1 (1-13)
+    { q:1, p:0, type:"select", prompt:"Match the people (A–E) with the deed: <strong>Urged Darwin to publish his scientific findings</strong>", opts:["A. Suess","B. Wallace","C. Darwin and Wallace","D. Wegener","E. Lyell and Hooker"], ans:"E", ev:"p1-D", loc:"Đoạn D (Passage 1)", qEn:"Charles Lyell and J. D. Hooker, close friends of Darwin, pressed Darwin to present his conclusions...", qVi:"Charles Lyell và J. D. Hooker, những người bạn thân của Darwin, đã thúc giục Darwin công bố kết luận của mình...", syn:"urged = pressed; publish his scientific findings = present his conclusions", s1:"Thúc giục Darwin xuất bản các phát hiện khoa học của ông.", s2:[["Gốc A (Suess)",0,"Nhà địa chất học mô tả vỏ Trái Đất."],["Gốc B (Wallace)",0,"Người gửi bài viết cho Darwin."],["Gốc D (Wegener)",0,"Cha đẻ thuyết trôi dạt lục địa."],["Gốc E (Lyell & Hooker)",1,"Hai người bạn thúc giục (pressed) Darwin công bố kết luận."]], s3:"Trong Đoạn D, động từ 'pressed' đồng nghĩa với 'urged' và 'present his conclusions' = 'publish his scientific findings'. Người thực hiện là Lyell và Hooker (E).", s4:"Loại A, B, C, D vì không phải người thúc ép Darwin công bố để giữ quyền ưu tiên." },
+    { q:2, p:0, type:"select", prompt:"Match the people (A–E) with the deed: <strong>Depicted physical features of earth's crust</strong>", opts:["A. Suess","B. Wallace","C. Darwin and Wallace","D. Wegener","E. Lyell and Hooker"], ans:"A", ev:"p1-H", loc:"Đoạn H (Passage 1)", qEn:"Eduard Suess, theorized that as the rigid Earth cools, its upper crust shrinks and wrinkles like the withering skin of an aging apple.", qVi:"Eduard Suess đưa ra giả thuyết rằng khi Trái Đất nguội đi, lớp vỏ trên của nó co lại và nhăn nheo như vỏ quả táo già.", syn:"depicted physical features = crust shrinks and wrinkles", s1:"Mô tả đặc điểm vật lý của lớp vỏ Trái Đất.", s2:[["Gốc A (Suess)",1,"Eduard Suess mô tả lớp vỏ Trái Đất co lại và nhăn nheo."],["Gốc B (Wallace)",0,"Nghiên cứu phân bố động vật."],["Gốc C (Darwin & Wallace)",0,"Đồng sáng lập thuyết chọn lọc tự nhiên."],["Gốc D (Wegener)",0,"Bác bỏ thuyết cầu nối đất liền."]], s3:"Đoạn H nêu rõ nhà địa chất Eduard Suess mô tả hình thái lớp vỏ Trái Đất ('upper crust shrinks and wrinkles'). Chọn A.", s4:"Loại B, C, D, E vì các nhà khoa học này không mô tả hình thái co rút của vỏ Trái Đất." },
+    { q:3, p:0, type:"select", prompt:"Match the people (A–E) with the opinion: <strong>Believed in continental drift theory while rejecting another one</strong>", opts:["A. Suess","B. Wallace","C. Darwin and Wallace","D. Wegener","E. Lyell and Hooker"], ans:"D", ev:"p1-G", loc:"Đoạn G & H (Passage 1)", qEn:"Wegener concluded that the then broadly accepted 'landbridge' theory could not account for this distribution of animals and that only his theory of continental drift could explain it.", qVi:"Wegener kết luận rằng thuyết 'cầu nối đất liền' không thể giải thích sự phân bố động vật này và chỉ có thuyết trôi dạt lục địa của ông mới giải thích được.", syn:"rejecting another one = dismissed 'landbridge' theory", s1:"Tin vào thuyết trôi dạt lục địa đồng thời bác bỏ một lý thuyết khác.", s2:[["Gốc A (Suess)",0,"Ủng hộ thuyết vỏ táo nhăn."],["Gốc B (Wallace)",0,"Tác giả sách Địa sinh học."],["Gốc D (Wegener)",1,"Tin vào thuyết trôi dạt lục địa (continental drift) và bác bỏ thuyết cầu nối đất liền (landbridge)."],["Gốc E (Lyell & Hooker)",0,"Bạn thân của Darwin."]], s3:"Cuối Đoạn G và đầu Đoạn H nêu rõ Wegener bác bỏ thuyết 'landbridge' để khẳng định thuyết 'continental drift' của mình. Chọn D.", s4:"Loại A, B, C, E." },
+    { q:4, p:0, type:"select", prompt:"Match the people (A–E) with the deed: <strong>Published works about wildlife distribution in different regions</strong>", opts:["A. Suess","B. Wallace","C. Darwin and Wallace","D. Wegener","E. Lyell and Hooker"], ans:"B", ev:"p1-E", loc:"Đoạn E (Passage 1)", qEn:"Wallace applied himself to the science of biogeography... resulting in the publication of a massive two volume work the Geographical Distribution of Animals in 1876.", qVi:"Wallace dốc sức cho ngành địa sinh học... dẫn đến việc xuất bản bộ sách đồ sộ hai tập Phân bố Địa lý của Động vật năm 1876.", syn:"wildlife distribution = Geographical Distribution of Animals", s1:"Xuất bản công trình về sự phân bố động vật hoang dã ở các vùng khác nhau.", s2:[["Gốc B (Wallace)",1,"Xuất bản bộ sách 2 tập 'The Geographical Distribution of Animals' năm 1876."],["Gốc C (Darwin & Wallace)",0,"Bẫy: Darwin ẩn dật viết về Nguồn gốc các loài, chỉ có Wallace xuất bản bộ sách Phân bố Động vật."],["Gốc D (Wegener)",0,"Trích dẫn lại sách của Wallace."],["Gốc A (Suess)",0,"Nhà địa chất học."]], s3:"Đoạn E dùng 'In contrast' để chỉ rõ chỉ có Wallace đi sâu vào địa sinh học và xuất bản bộ sách 2 tập về phân bố động vật. Chọn B.", s4:"Loại C (bẫy ghép tên cả hai người) và A, D, E." },
+    { q:5, p:0, type:"select", prompt:"Match the people (A–E) with the opinion: <strong>Evolution of species is based on selection by nature</strong>", opts:["A. Suess","B. Wallace","C. Darwin and Wallace","D. Wegener","E. Lyell and Hooker"], ans:"C", ev:"p1-A", loc:"Đoạn A (Passage 1)", qEn:"Charles Darwin and his young contemporary Alfred Russel Wallace reached the conclusion that life had evolved by natural selection.", qVi:"Charles Darwin và người đồng cấp trẻ tuổi Alfred Russel Wallace đã đi đến kết luận rằng sự sống tiến hóa thông qua chọn lọc tự nhiên.", syn:"selection by nature = natural selection", s1:"Sự tiến hóa của các loài dựa trên sự chọn lọc của tự nhiên.", s2:[["Gốc B (Wallace)",0,"Thiếu Darwin."],["Gốc C (Darwin and Wallace)",1,"Cả Darwin và Wallace cùng độc lập kết luận sự sống tiến hóa nhờ chọn lọc tự nhiên."],["Gốc D (Wegener)",0,"Nghiên cứu trôi dạt lục địa."],["Gốc E (Lyell & Hooker)",0,"Người chủ trì cuộc họp."]], s3:"Đoạn A khẳng định cả Darwin và Wallace đều đi đến kết luận rằng sự sống tiến hóa bằng chọn lọc tự nhiên ('evolved by natural selection'). Chọn C.", s4:"Loại A, B, D, E." },
+    { q:6, p:0, type:"select", prompt:"Which paragraph (A–I) contains: <strong>The most adaptable would survive</strong>", opts:["A","B","C","D","E","F","G","H","I"], ans:"B", ev:"p1-B", loc:"Đoạn B (Passage 1)", qEn:"The answer was clearly that on the whole the best fit lived... the superior would remain, that is, the fittest would survive.", qVi:"Câu trả lời rõ ràng là nhìn chung cá thể thích nghi tốt nhất sẽ sống sót... kẻ thích nghi nhất sẽ sinh tồn.", syn:"the most adaptable = the best fit / the fittest", s1:"Đoạn văn nào chứa thông tin: Cá thể thích nghi tốt nhất sẽ sống sót.", s2:[["Đoạn A",0,"Giới thiệu siêu lục địa Pangea."],["Đoạn B",1,"Trực tiếp giải thích 'the best fit lived' và 'the fittest would survive'."],["Đoạn C",0,"Nói về Malthus và các chuyến đi."],["Đoạn F",0,"Nói về đường Wallace's line."]], s3:"Câu đầu và câu cuối Đoạn B giải thích trực tiếp quy luật 'the fittest would survive' (= the most adaptable would survive). Chọn B.", s4:"Loại các đoạn còn lại." },
+    { q:7, p:0, type:"select", prompt:"Which paragraph (A–I) contains: <strong>The boundary called Wallace's line is found between Asia and Australia</strong>", opts:["A","B","C","D","E","F","G","H","I"], ans:"F", ev:"p1-F", loc:"Đoạn F (Passage 1)", qEn:"...there is a distinct faunal boundary, called 'Wallace's line,' between an Asian realm of animals... and an Australian realm...", qVi:"...có một ranh giới động vật rõ rệt gọi là 'Đường Wallace' giữa vương quốc động vật châu Á và châu Úc.", syn:"boundary = distinct faunal boundary", s1:"Đoạn văn nào chứa thông tin: Ranh giới gọi là Đường Wallace nằm giữa châu Á và châu Úc.", s2:[["Đoạn E",0,"Chỉ nhắc đến tên sách của Wallace."],["Đoạn F",1,"Định nghĩa trực tiếp 'Wallace's line' nằm giữa châu Á và châu Úc."],["Đoạn G",0,"Nói về Wegener."],["Đoạn H",0,"Nói về Suess."]], s3:"Đoạn F chứa cụm từ khóa riêng 'Wallace's line' ngăn cách hệ động vật châu Á và châu Úc. Chọn F.", s4:"Loại các đoạn khác." },
+    { q:8, p:0, type:"select", prompt:"Which paragraph (A–I) contains: <strong>Animal affinity exists between Australia and Africa</strong>", opts:["A","B","C","D","E","F","G","H","I"], ans:"G", ev:"p1-G", loc:"Đoạn G (Passage 1)", qEn:"Wallace had shown that animals long established in southwestern Australia had an affinity with animals in South Africa...", qVi:"Wallace đã chỉ ra rằng động vật định cư lâu đời ở tây nam nước Úc có mối quan hệ họ hàng với động vật ở Nam Phi...", syn:"Animal affinity = animals had an affinity with", s1:"Đoạn văn nào chứa thông tin: Mối quan hệ họ hàng về động vật tồn tại giữa Úc và châu Phi.", s2:[["Đoạn F",0,"Chỉ nói về châu Á và châu Úc."],["Đoạn G",1,"Nêu rõ động vật ở tây nam Úc có 'affinity' với động vật ở Nam Phi (South Africa)."],["Đoạn H",0,"Nói về cầu nối đất liền."],["Đoạn I",0,"Nói về mảng kiến tạo."]], s3:"Đoạn G nêu trực tiếp mối quan hệ họ hàng ('affinity') giữa động vật ở Australia và South Africa. Chọn G.", s4:"Loại các đoạn khác." },
+    { q:9, p:0, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): Wegener found that continental drift instead of 'land bridge' theory in which vegetation and wildlife <strong>[9]</strong> __________ intercontinentally, could explain strange species' distribution phenomenon.", ans:["migrated","once migrated"], ev:"p1-H", loc:"Đoạn H (Passage 1)", qEn:"...proposed that plants and animals had once migrated across now-submerged intercontinental landbridges.", qVi:"...cho rằng thực vật và động vật đã từng di cư qua các cầu nối đất liền liên lục địa nay đã chìm.", syn:"vegetation and wildlife = plants and animals; intercontinentally = across intercontinental landbridges", s1:"Thực vật và động vật [9] di cư (migrated) liên lục địa.", s2:[["Từ loại",1,"Động từ quá khứ đứng sau 'vegetation and wildlife'."],["Đáp án chuẩn",1,"migrated (hoặc once migrated)."]], s3:"Trong câu đầu Đoạn H, 'plants and animals' = 'vegetation and wildlife', động từ chính là 'migrated'.", s4:"Không điền quá 2 từ." },
+    { q:10, p:0, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): However, Eduard Suess compared the wrinkle of the crust to the <strong>[10]</strong> __________ of an old apple.", ans:["withering skin"], ev:"p1-H", loc:"Đoạn H (Passage 1)", qEn:"...its upper crust shrinks and wrinkles like the withering skin of an aging apple.", qVi:"...lớp vỏ trên của nó co lại và nhăn nheo giống như lớp vỏ héo hon của một quả táo già.", syn:"an old apple = an aging apple", s1:"So sánh nếp nhăn của lớp vỏ Trái Đất với [10] lớp vỏ héo hon (withering skin) của một quả táo già.", s2:[["Từ loại",1,"Cụm danh từ đứng giữa 'the ___ of an old apple'."],["Đáp án chuẩn",1,"withering skin (2 từ)."]], s3:"Cấu trúc 'like the withering skin of an aging apple' khớp hoàn toàn với chỗ trống số 10.", s4:"Giữ nguyên 2 từ 'withering skin'." },
+    { q:11, p:0, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): Now it is well known that we are living on the planet where there are <strong>[11]</strong> __________ in constant mobile states instead of what Suess described.", ans:["tectonic plates"], ev:"p1-I", loc:"Đoạn I (Passage 1)", qEn:"Today, we know that we live on a dynamic Earth with shifting, colliding and separating tectonic plates, not a 'withering skin'...", qVi:"Ngày nay, chúng ta biết mình đang sống trên một Trái Đất năng động với các mảng kiến tạo dịch chuyển, va chạm và tách rời...", syn:"in constant mobile states = shifting, colliding and separating", s1:"Hành tinh nơi có [11] các mảng kiến tạo (tectonic plates) ở trạng thái chuyển động liên tục.", s2:[["Từ loại",1,"Danh từ số nhiều sau 'there are'."],["Đáp án chuẩn",1,"tectonic plates (2 từ)."]], s3:"Đoạn I khẳng định Trái Đất có các mảng kiến tạo ('tectonic plates') luôn chuyển động.", s4:"Không điền kèm tính từ phía trước vì giới hạn 2 từ." },
+    { q:12, p:0, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): The debate in biogeography has switched to concerns between two terms: '<strong>[12]</strong> __________' and '[13]'.", ans:["dispersalism","vicarianism"], ev:"p1-I", loc:"Đoạn I (Passage 1)", qEn:"The discussion now concerns 'dispersalism' versus 'vicarianism'...", qVi:"Cuộc thảo luận hiện nay xoay quanh 'thuyết phát tán' đối lập với 'thuyết cách ly địa lý'...", syn:"switched to = has shifted", s1:"Cuộc tranh luận chuyển sang hai thuật ngữ: '[12] dispersalism' và '[13] vicarianism'.", s2:[["Từ loại",1,"Danh từ thuật ngữ trong ngoặc kép."],["Đáp án chuẩn",1,"dispersalism"]], s3:"Đoạn I nêu trực tiếp thuật ngữ đầu tiên trong ngoặc kép là 'dispersalism'.", s4:"Chú ý viết đúng chính tả." },
+    { q:13, p:0, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): ...between two terms: '[12]' and '<strong>[13]</strong> __________'.", ans:["vicarianism","dispersalism"], ev:"p1-I", loc:"Đoạn I (Passage 1)", qEn:"The discussion now concerns 'dispersalism' versus 'vicarianism'...", qVi:"Cuộc thảo luận hiện nay xoay quanh 'thuyết phát tán' đối lập với 'thuyết cách ly địa lý'...", syn:"two terms = 'dispersalism' versus 'vicarianism'", s1:"Thuật ngữ thứ hai là '[13] vicarianism'.", s2:[["Từ loại",1,"Danh từ thuật ngữ thứ hai trong ngoặc kép."],["Đáp án chuẩn",1,"vicarianism"]], s3:"Điền thuật ngữ còn lại trong cặp thuật ngữ ở Đoạn I là 'vicarianism'.", s4:"Kiểm tra kỹ chính tả." },
+
+    // PASSAGE 2 (14-26)
+    { q:14, p:1, type:"fill", prompt:"Summary (NO MORE THAN THREE WORDS): A psychology professor drew a conclusion that an average yawn lasts about 6 seconds followed by an <strong>[14]</strong> __________ before another yawn.", ans:["interval","interval of 68s"], ev:"p2-E", loc:"Đoạn E (Passage 2)", qEn:"He found the basic yawn lasts about six seconds and they come in bouts with an interval of about 68 seconds.", qVi:"Ông phát hiện cái ngáp cơ bản kéo dài khoảng 6 giây và diễn ra theo đợt với khoảng nghỉ khoảng 68 giây.", syn:"average yawn = basic yawn", s1:"Kéo dài 6 giây theo sau bởi một [14] khoảng nghỉ (interval) trước lần ngáp tiếp theo.", s2:[["Dấu hiệu 'an'",1,"Sau mạo từ 'an' bắt buộc là danh từ bắt đầu bằng nguyên âm."],["Đáp án chuẩn",1,"interval"]], s3:"Nhờ mạo từ 'an' phía trước, ta chọn ngay danh từ 'interval' trong cụm 'with an interval of about 68 seconds' ở Đoạn E.", s4:"Không điền 'bout' vì 'bout' bắt đầu bằng phụ âm." },
+    { q:15, p:1, type:"fill", prompt:"Summary (NO MORE THAN THREE WORDS): ...but behavior accompanied with yawning shows a <strong>[15]</strong> __________ in genders.", ans:["complex distinction","distinction"], ev:"p2-E", loc:"Đoạn E (Passage 2)", qEn:"...men are significantly less likely to cover their mouths which may indicate complex distinction in genders.", qVi:"...nam giới ít che miệng hơn hẳn, điều này cho thấy sự khác biệt phức tạp giữa các giới tính.", syn:"shows = indicate", s1:"Hành vi đi kèm với ngáp cho thấy một [15] sự khác biệt phức tạp (complex distinction) giữa các giới tính.", s2:[["Từ loại",1,"Cụm danh từ đứng sau 'a' và trước 'in genders'."],["Đáp án chuẩn",1,"complex distinction (hoặc distinction)."]], s3:"Trong Đoạn E, cụm 'indicate complex distinction in genders' khớp hoàn toàn với chỗ trống.", s4:"Không điền quá 3 từ." },
+    { q:16, p:1, type:"fill", prompt:"Summary (NO MORE THAN THREE WORDS): Besides, a part of the brain involved in yawning may also be responsible for <strong>[16]</strong> __________.", ans:["breathing","controlling breathing"], ev:"p2-E", loc:"Đoạn E (Passage 2)", qEn:"Some researchers say it's coordinated within the hypothalamus of the brain, the area that also controls breathing.", qVi:"Nó được điều phối trong vùng dưới đồi của não, khu vực cũng kiểm soát việc hô hấp.", syn:"responsible for = controls", s1:"Một phần não bộ tham gia vào việc ngáp cũng chịu trách nhiệm cho việc [16] hô hấp (breathing).", s2:[["Từ loại",1,"Danh từ / V-ing sau giới từ 'for'."],["Đáp án chuẩn",1,"breathing"]], s3:"Cuối Đoạn E nêu rõ vùng dưới đồi 'also controls breathing' (= responsible for breathing).", s4:"Không điền 'hypothalamus' vì đã được thay bằng 'a part of the brain'." },
+    { q:17, p:1, type:"fill", prompt:"Summary (NO MORE THAN THREE WORDS): Another study found that there is a link between a yawn and <strong>[17]</strong> __________ during the first three months of pregnancy...", ans:["stretching"], ev:"p2-F", loc:"Đoạn F (Passage 2)", qEn:"...observed not just yawning but a link between yawning and stretching as early as the end of the first prenatal trimester.", qVi:"...quan sát thấy mối liên hệ giữa ngáp và vươn vai ngay từ cuối tam cá nguyệt đầu tiên của thai kỳ.", syn:"first three months of pregnancy = first prenatal trimester", s1:"Mối liên hệ giữa ngáp và [17] vươn vai (stretching) trong 3 tháng đầu thai kỳ.", s2:[["Từ loại",1,"Danh từ đi cặp với 'a yawn and ___'."],["Đáp án chuẩn",1,"stretching"]], s3:"Cuối Đoạn F nêu rõ 'a link between yawning and stretching' vào cuối 'first prenatal trimester'.", s4:"Điền chính xác từ 'stretching'." },
+    { q:18, p:1, type:"fill", prompt:"Summary (NO MORE THAN THREE WORDS): ...and yawning was also shown to set off an involuntary movement in people with <strong>[18]</strong> __________.", ans:["brain damage","stroke","a stroke"], ev:"p2-G", loc:"Đoạn G (Passage 2)", qEn:"...occurs in many people paralyzed on one side of their body because of brain damage caused by a stroke.", qVi:"...xảy ra ở nhiều người bị liệt một bên cơ thể do tổn thương não gây ra bởi đột quỵ.", syn:"involuntary movement = paralyzed arm rises and flexes automatically", s1:"Kích hoạt chuyển động không tự chủ ở những người bị [18] tổn thương não / đột quỵ (brain damage / stroke).", s2:[["Từ loại",1,"Cụm danh từ chỉ bệnh lý sau giới từ 'with'."],["Đáp án chuẩn",1,"brain damage (hoặc stroke)."]], s3:"Câu đầu Đoạn G chỉ rõ hiện tượng này xảy ra ở bệnh nhân bị 'brain damage' do 'stroke'.", s4:"Không điền tính từ 'paralyzed'." },
+    { q:19, p:1, type:"select", prompt:"Which paragraph (A–H) contains: <strong>The rate for yawning shows some regular pattern.</strong>", opts:["A","B","C","D","E","F","G","H"], ans:"E", ev:"p2-E", loc:"Đoạn E (Passage 2)", qEn:"He found the basic yawn lasts about six seconds and they come in bouts with an interval of about 68 seconds.", qVi:"Ông phát hiện cái ngáp cơ bản kéo dài khoảng 6 giây và lặp lại theo đợt với khoảng nghỉ 68 giây.", syn:"regular pattern = lasts 6 seconds ... interval of 68 seconds", s1:"Đoạn nào chứa thông tin: Tần suất/tốc độ ngáp cho thấy một quy luật đều đặn.", s2:[["Đoạn B",0,"Nói về tính nguyên thủy của ngáp."],["Đoạn E",1,"Nêu rõ chu kỳ 6 giây và khoảng nghỉ 68 giây cùng tần suất ngang nhau ở nam và nữ."],["Đoạn F",0,"Nói về ngáp và vươn vai."],["Đoạn G",0,"Nói về bệnh nhân đột quỵ."]], s3:"Đoạn E cung cấp các con số thống kê về quy luật thời gian và tần suất của tiếng ngáp. Chọn E.", s4:"Loại các đoạn khác." },
+    { q:20, p:1, type:"select", prompt:"Which paragraph (A–H) contains: <strong>Yawning is an inherent ability that appears in both animals and humans.</strong>", opts:["A","B","C","D","E","F","G","H"], ans:"B", ev:"p2-B", loc:"Đoạn B (Passage 2)", qEn:"Yawning is an ancient, primitive act. Humans do it even before they are born... Some snakes unhinge their jaws to do it. One species of penguins yawns...", qVi:"Ngáp là hành vi cổ xưa, nguyên thủy. Con người làm điều đó ngay cả trước khi sinh ra... Rắn và chim cánh cụt cũng ngáp.", syn:"inherent ability = primitive act / before they are born", s1:"Đoạn nào chứa thông tin: Ngáp là khả năng bẩm sinh xuất hiện ở cả động vật và người.", s2:[["Đoạn A",0,"Bẫy: Chỉ nhắc đến chim vỗ cánh (wing-flapping), không phải chim ngáp."],["Đoạn B",1,"Khẳng định ngáp là hành vi nguyên thủy từ trong bụng mẹ và có ở người, rắn, chim cánh cụt, linh trưởng."],["Đoạn C",0,"Nói về thí nghiệm 1."],["Đoạn D",0,"Nói về thí nghiệm 2."]], s3:"Đoạn B chứng minh tính bẩm sinh ('before they are born') và liệt kê cả người lẫn động vật. Chọn B.", s4:"Tránh bẫy ở Đoạn A." },
+    { q:21, p:1, type:"select", prompt:"Which paragraph (A–H) contains: <strong>Stretching and yawning doesn't always occur together.</strong>", opts:["A","B","C","D","E","F","G","H"], ans:"F", ev:"p2-F", loc:"Đoạn F (Passage 2)", qEn:"But they do not always co-occur, people usually yawn when we stretch, but we don't always stretch when we yawn...", qVi:"Nhưng chúng không phải lúc nào cũng xảy ra đồng thời: ta thường ngáp khi vươn vai, nhưng không phải lúc nào cũng vươn vai khi ngáp...", syn:"doesn't always occur together = do not always co-occur", s1:"Đoạn nào chứa thông tin: Vươn vai và ngáp không phải lúc nào cũng xảy ra cùng nhau.", s2:[["Đoạn E",0,"Nói về thời lượng ngáp."],["Đoạn F",1,"Chứa câu khẳng định trực tiếp: 'But they do not always co-occur'."],["Đoạn G",0,"Nói về phản ứng tự động ở người liệt."],["Đoạn H",0,"Nói về thân não."]], s3:"Từ 'co-occur' ở Đoạn F đồng nghĩa 100% với 'occur together'. Chọn F.", s4:"Loại các đoạn khác." },
+    { q:22, p:1, type:"select", prompt:"Which paragraph (A–H) contains: <strong>Yawning may suggest people are empathetic and attentive.</strong>", opts:["A","B","C","D","E","F","G","H"], ans:"D", ev:"p2-D", loc:"Đoạn D (Passage 2)", qEn:"'It's also a good indicator if you're empathizing with me and paying attention.'", qVi:"'Đó cũng là một chỉ báo tốt cho thấy bạn đang đồng cảm với tôi và đang chú ý lắng nghe.'", syn:"suggest = indicator; empathetic = empathizing; attentive = paying attention", s1:"Đoạn nào chứa thông tin: Ngáp có thể cho thấy mọi người đang đồng cảm và chú ý.", s2:[["Đoạn C",0,"Bẫy: Chỉ nhắc đến bài test đồng cảm, không có chi tiết 'attentive' (paying attention)."],["Đoạn D",1,"Câu cuối Đoạn D có đủ cả 'empathizing with me' và 'paying attention'."],["Đoạn E",0,"Nói về rối loạn não."],["Đoạn H",0,"Nói về vùng não cấp cao."]], s3:"Câu cuối Đoạn D khớp hoàn toàn cả 3 từ khóa: 'indicator' (suggest), 'empathizing' (empathetic) và 'paying attention' (attentive). Chọn D.", s4:"Phân biệt kỹ với Đoạn C." },
+    { q:23, p:1, type:"select", prompt:"Which paragraph (A–H) contains: <strong>Some superior areas in the brain may underline the infectious feature of yawning.</strong>", opts:["A","B","C","D","E","F","G","H"], ans:"H", ev:"p2-H", loc:"Đoạn H (Passage 2)", qEn:"The multiplicity of stimuli of contagious yawning, by contrast, implicates many higher brain regions.", qVi:"Ngược lại, sự đa dạng của các kích thích gây ngáp lây lan lại liên quan đến nhiều vùng não cấp cao hơn.", syn:"superior areas in the brain = higher brain regions; infectious = contagious", s1:"Đoạn nào chứa thông tin: Một số vùng cấp cao trong não có thể là nền tảng cho tính chất lây lan của tiếng ngáp.", s2:[["Đoạn D",0,"Chỉ nói về vùng vỏ não đai sau."],["Đoạn E",0,"Nói về vùng dưới đồi."],["Đoạn H",1,"Câu cuối Đoạn H nêu rõ 'contagious yawning... implicates many higher brain regions'."],["Đoạn G",0,"Nói về đột quỵ."]], s3:"Cụm 'higher brain regions' = 'superior areas in the brain' và 'contagious yawning' = 'infectious feature of yawning' nằm ở cuối Đoạn H. Chọn H.", s4:"Loại D và E." },
+    { q:24, p:1, type:"select", prompt:"TRUE / FALSE / NOT GIVEN: <strong>Some participants in Platek's first experiment did not understand why they were asked to look at people yawning.</strong>", opts:["TRUE","FALSE","NOT GIVEN"], ans:"TRUE", ev:"p2-C", loc:"Đoạn C (Passage 2)", qEn:"'We literally had people saying, \"Why am I looking at people yawning?\"— Professor Platek said. \"It just had no effect.\"'", qVi:"'Chúng tôi thực sự có những người nói: \"Tại sao tôi lại phải nhìn người ta ngáp?\"—Giáo sư Platek kể.'", syn:"did not understand why = saying 'Why am I looking at people yawning?'", s1:"Một số người tham gia thí nghiệm 1 của Platek không hiểu tại sao họ được yêu cầu nhìn người khác ngáp.", s2:[["TRUE",1,"Khớp hoàn toàn với câu hỏi thắc mắc của người tham gia ở Đoạn C."],["FALSE",0,"Sai vì thông tin hoàn toàn khớp."],["NOT GIVEN",0,"Sai vì có dẫn chứng rõ ràng."]], s3:"Việc người tham gia hỏi 'Why am I looking at people yawning?' chứng tỏ họ không hiểu mục đích việc xem video ngáp. Chọn TRUE.", s4:"Loại FALSE và NOT GIVEN." },
+    { q:25, p:1, type:"select", prompt:"TRUE / FALSE / NOT GIVEN: <strong>The results from the second experiment indicate the link between yawning and empathy.</strong>", opts:["TRUE","FALSE","NOT GIVEN"], ans:"TRUE", ev:"p2-D", loc:"Đoạn D (Passage 2)", qEn:"When the students watched the videos, the part of the brain which reacted was the part scientists believe controls empathy — the posterior cingulate...", qVi:"Khi các sinh viên xem video, phần não phản ứng chính là phần các nhà khoa học tin rằng kiểm soát sự đồng cảm...", syn:"link between yawning and empathy = part of the brain which reacted controls empathy", s1:"Kết quả từ thí nghiệm thứ hai chỉ ra mối liên hệ giữa việc ngáp và sự đồng cảm.", s2:[["TRUE",1,"Máy chụp MRI ở thí nghiệm 2 cho thấy vùng não kiểm soát sự đồng cảm phản ứng khi xem người khác ngáp."],["FALSE",0,"Sai."],["NOT GIVEN",0,"Sai."]], s3:"Đoạn D khẳng định vùng não phản ứng khi xem băng hình ngáp trong thí nghiệm 2 chính là vùng điều khiển sự đồng cảm ('controls empathy'). Chọn TRUE.", s4:"Loại FALSE và NOT GIVEN." },
+    { q:26, p:1, type:"select", prompt:"TRUE / FALSE / NOT GIVEN: <strong>Yawning shows a positive impact on the recovery from brain damage brought by a stroke.</strong>", opts:["TRUE","FALSE","NOT GIVEN"], ans:"NOT GIVEN", ev:"p2-G", loc:"Đoạn G (Passage 2)", qEn:"It is not known whether the associated response is a positive prognosis for recovery, nor whether yawning is therapeutic...", qVi:"Người ta vẫn chưa biết liệu phản ứng liên kết này có phải là một tiên lượng tích cực cho sự hồi phục hay không...", syn:"It is not known whether = NOT GIVEN", s1:"Việc ngáp cho thấy tác động tích cực đối với sự hồi phục sau tổn thương não do đột quỵ.", s2:[["TRUE",0,"Bẫy: Bài đọc nói 'It is not known whether...' (Vẫn chưa rõ liệu...)."],["FALSE",0,"Bẫy: Chưa biết chứ không phải khẳng định là không có tác dụng."],["NOT GIVEN",1,"Vì khoa học vẫn chưa biết ('It is not known'), nên không có cơ sở xác nhận -> NOT GIVEN."]], s3:"Khi bài đọc nêu 'It is not known whether X is true', còn câu hỏi khẳng định 'X là đúng', đáp án chuẩn IELTS luôn là NOT GIVEN.", s4:"Tránh bẫy chọn FALSE." },
+
+    // PASSAGE 3 (27-40)
+    { q:27, p:2, type:"abcd", prompt:"Why is the faithful communication of science important?", opts:[{id:"A",text:"Science plays an increasingly significant role in people's lives."},{id:"B",text:"Science is fraught with challenges the public are interested in."},{id:"C",text:"The nature of complexity in science communication leads to confusion."},{id:"D",text:"Scientific inventions are more important than ever before."}], ans:"A", ev:"p3-A", loc:"Đoạn A (Passage 3)", qEn:"Science plays an increasingly significant role in people's lives, making the faithful communication of scientific developments more important than ever.", qVi:"Khoa học đóng vai trò ngày càng quan trọng trong đời sống con người, khiến việc truyền đạt trung thực các phát triển khoa học trở nên quan trọng hơn bao giờ hết.", syn:"Why ... important = making faithful communication more important than ever", s1:"Tại sao việc truyền đạt trung thực về khoa học lại quan trọng?", s2:[["Gốc A",1,"Khoa học đóng vai trò ngày càng quan trọng trong đời sống con người."],["Gốc B",0,"Sai vì truyền thông khoa học đầy thách thức chứ không phải công chúng thích thách thức."],["Gốc C",0,"Nêu hậu quả của sự phức tạp chứ không phải lý do tại sao truyền thông trung thực lại quan trọng."],["Gốc D",0,"Bẫy từ vựng: bài nói 'faithful communication' quan trọng hơn bao giờ hết chứ không phải 'inventions'."]], s3:"Câu đầu tiên của Đoạn A dùng cấu trúc nguyên nhân - kết quả: 'Science plays an increasingly significant role in people's lives, making the faithful communication... more important than ever'. Chọn A.", s4:"Loại B, C, D vì sai lệch thông tin." },
+    { q:28, p:2, type:"abcd", prompt:"What is the reason for many of the biggest challenges in science reporting?", opts:[{id:"A",text:"Phenomenon such as global warming, cancer research, diet studies are too complex"},{id:"B",text:"Scientists themselves often only partly understand the Theory of Evolution"},{id:"C",text:"Scientists do not totally comprehend the impact of certain scientific advancements"},{id:"D",text:"Scientists themselves often partly understand the esoteric communication nature"}], ans:"C", ev:"p3-B", loc:"Đoạn B (Passage 3)", qEn:"But many of the biggest challenges for science reporting arise because in areas of evolving research, scientists themselves often only partly understand the full implications of any particular advance or development.", qVi:"Nhưng nhiều thách thức lớn nhất đối với việc đưa tin khoa học nảy sinh vì trong các lĩnh vực nghiên cứu đang phát triển, bản thân các nhà khoa học thường chỉ hiểu một phần những hệ quả đầy đủ của bất kỳ tiến bộ hay phát triển cụ thể nào.", syn:"do not totally comprehend = only partly understand; impact = full implications; advancements = advance or development", s1:"Đâu là nguyên nhân dẫn đến nhiều thách thức lớn nhất trong việc đưa tin khoa học?", s2:[["Gốc A",0,"Chỉ liệt kê các ví dụ ở câu sau."],["Gốc B",0,"Bẫy từ vựng: 'evolving research' (nghiên cứu đang phát triển) bị biến tướng thành 'Theory of Evolution' (Thuyết tiến hóa)."],["Gốc C",1,"Các nhà khoa học không hiểu hoàn toàn (only partly understand) tác động (implications) của một số tiến bộ khoa học (advance or development)."],["Gốc D",0,"Ghép từ sai ngữ cảnh."]], s3:"Trong Đoạn B: 'only partly understand' = 'do not totally comprehend'; 'full implications' = 'impact'; 'any particular advance or development' = 'certain scientific advancements'. Chọn C.", s4:"Cẩn thận bẫy 'evolving research' vs 'Theory of Evolution' ở câu B." },
+    { q:29, p:2, type:"abcd", prompt:"According to the 3rd paragraph, the reference to the term and example of 'theory of relativity' is to demonstrate", opts:[{id:"A",text:"Theory of relativity is about an invariant physical phenomenon"},{id:"B",text:"Scientific terms can sometimes cause misunderstandings"},{id:"C",text:"The term 'relativity' is designed to be misleading public"},{id:"D",text:"Everything is relative and there is no absolute existence"}], ans:"B", ev:"p3-C", loc:"Đoạn C (Passage 3)", qEn:"Ambiguous word choices are the source of some misunderstandings... The term 'relativity,' for example, is intrinsically misleading.", qVi:"Những lựa chọn từ ngữ mơ hồ là nguồn gốc của một số hiểu lầm... Ví dụ, thuật ngữ 'tương đối' về bản chất rất dễ gây hiểu lầm.", syn:"cause misunderstandings = source of some misunderstandings / misleading", s1:"Theo đoạn 3 (Đoạn C), việc nhắc đến thuật ngữ và ví dụ 'thuyết tương đối' nhằm mục đích chứng minh điều gì?", s2:[["Gốc A",0,"Chỉ là chi tiết giải thích bản chất vật lý chứ không phải mục đích chính của tác giả khi nêu ví dụ."],["Gốc B",1,"Các thuật ngữ khoa học đôi khi có thể gây ra sự hiểu lầm (Ambiguous word choices are the source of some misunderstandings)."],["Gốc C",0,"Sai ở từ 'designed to' (không ai cố tình thiết kế thuật ngữ để đánh lừa công chúng)."],["Gốc D",0,"Đây chính là cách hiểu sai của công chúng."]], s3:"Trong cấu trúc đoạn văn học thuật, câu đi kèm 'for example' luôn dùng để chứng minh cho câu chủ đề (Topic Sentence) đứng đầu đoạn: 'Ambiguous word choices are the source of some misunderstandings'. Chọn B.", s4:"Loại A (chi tiết phụ), C (sai từ 'designed'), D (hiểu lầm của công chúng)." },
+    { q:30, p:2, type:"abcd", prompt:"Which one is a good example of an area where scientists used appropriate terminology?", opts:[{id:"A",text:"The uncertainty principle"},{id:"B",text:"Global warming"},{id:"C",text:"The theory of relativity"},{id:"D",text:"Freon's destructive process on Ozone"}], ans:"D", ev:"p3-F", loc:"Đoạn F (Passage 3)", qEn:"Science sometimes transcends this limitation: remarkably, chemists were able to detail the precise chemical processes involved in the destruction of the ozone layer, making the evidence that chlorofluorocarbon gases (Freon, for example) were destroying the ozone layer indisputably.", qVi:"Đôi khi khoa học vượt qua được hạn chế này: đáng chú ý là các nhà hóa học đã trình bày chi tiết quá trình hóa học chính xác trong sự phá hủy tầng ozone, khiến bằng chứng về việc khí CFC (ví dụ như Freon) phá hủy tầng ozone trở nên không thể chối cãi.", syn:"used appropriate terminology = transcends this limitation / precise chemical processes", s1:"Đâu là một ví dụ tốt về lĩnh vực mà các nhà khoa học đã sử dụng thuật ngữ/mô tả chuẩn xác?", s2:[["Gốc A",0,"Thuật ngữ bị lạm dụng (Đoạn D)."],["Gốc B",0,"Thuật ngữ có vấn đề (Đoạn F)."],["Gốc C",0,"Thuật ngữ dễ gây hiểu lầm (Đoạn C)."],["Gốc D",1,"Quá trình phá hủy tầng Ozone của khí Freon được mô tả chính xác, vượt qua hạn chế ngôn từ."]], s3:"Trong khi A, B, C đều là ví dụ về thuật ngữ gây hiểu lầm, thì cuối Đoạn F nêu rõ các nhà hóa học đã vượt qua hạn chế này ('transcends this limitation') khi mô tả chính xác quá trình khí Freon phá hủy tầng Ozone. Chọn D.", s4:"Loại A, B, C vì cả 3 đều là ví dụ về 'incorrect/problematic terminology'." },
+    { q:31, p:2, type:"abcd", prompt:"What is a surprising finding of the Harvard debates in the passage?", opts:[{id:"A",text:"There are equal intrinsic scientific abilities of men and women."},{id:"B",text:"Both sides used the same data in support of their argument."},{id:"C",text:"The scientific data usually shows no substantial figures to support a debated idea."},{id:"D",text:"Social factors might have a clear connection to scientific ability."}], ans:"B", ev:"p3-G", loc:"Đoạn G (Passage 3)", qEn:"One of the more amusing aspects of the discussion was that those who believed in the differences and those who didn't used the same evidence about gender-specific special ability.", qVi:"Một trong những khía cạnh thú vị/đáng ngạc nhiên hơn của cuộc thảo luận là cả những người tin vào sự khác biệt lẫn những người không tin đều sử dụng cùng một bằng chứng về năng lực đặc biệt theo giới tính.", syn:"Both sides = those who believed ... and those who didn't; used the same data = used the same evidence", s1:"Đâu là phát hiện đáng ngạc nhiên/thú vị trong cuộc tranh luận tại Harvard được nêu trong bài?", s2:[["Gốc A",0,"Không phải điều được tác giả nhấn mạnh là 'amusing aspect'."],["Gốc B",1,"Cả hai phe đều sử dụng cùng một dữ liệu/bằng chứng để bảo vệ lập luận trái ngược nhau của mình."],["Gốc C",0,"Khái quát hóa sai ('usually')."],["Gốc D",0,"Trái ngược với bài đọc (bài đọc nói 'unclear connection')."]], s3:"Ở Đoạn G, tác giả chỉ rõ khía cạnh kỳ lạ/thú vị ('One of the more amusing aspects') là cả hai phe đối lập ('those who believed... and those who didn't' = 'Both sides') lại dùng chung một bộ bằng chứng ('used the same evidence' = 'used the same data'). Chọn B.", s4:"Loại A, C, D." },
+    { q:32, p:2, type:"select", prompt:"YES / NO / NOT GIVEN: <strong>'Global warming' scientifically refers to greater fluctuations in temperature and rainfall rather than a universal temperature rise.</strong>", opts:["YES","NO","NOT GIVEN"], ans:"YES", ev:"p3-F", loc:"Đoạn F (Passage 3)", qEn:"Climatologists predict more drastic fluctuations in temperature and rainfall — not necessarily that every place will be warmer.", qVi:"Các nhà khí hậu học dự đoán những biến động mạnh mẽ hơn về nhiệt độ và lượng mưa — chứ không nhất thiết là mọi nơi đều sẽ ấm lên.", syn:"greater fluctuations = more drastic fluctuations; rather than a universal temperature rise = not necessarily that every place will be warmer", s1:"'Nóng lên toàn cầu' về mặt khoa học đề cập đến sự biến động lớn hơn về nhiệt độ và lượng mưa hơn là sự tăng nhiệt độ ở khắp mọi nơi.", s2:[["YES",1,"Hoàn toàn đồng nhất với giải thích của các nhà khí hậu học ở Đoạn F."],["NO",0,"Sai."],["NOT GIVEN",0,"Sai."]], s3:"Trong Đoạn F: 'more drastic fluctuations in temperature and rainfall' = 'greater fluctuations in temperature and rainfall'; 'not necessarily that every place will be warmer' = 'rather than a universal temperature rise'. Chọn YES.", s4:"Loại NO và NOT GIVEN." },
+    { q:33, p:2, type:"select", prompt:"YES / NO / NOT GIVEN: <strong>More media coverage of 'global warming' would help the public to recognize the phenomenon.</strong>", opts:["YES","NO","NOT GIVEN"], ans:"NOT GIVEN", ev:"p3-F", loc:"Đoạn F (Passage 3)", qEn:"'Global warming' is another example of problematic terminology... Clearly 'global climate change' would have been a better name.", qVi:"'Nóng lên toàn cầu' là một ví dụ khác về thuật ngữ có vấn đề... Rõ ràng 'biến đổi khí hậu toàn cầu' sẽ là một cái tên tốt hơn.", syn:"More media coverage = KHÔNG ĐƯỢC ĐỀ CẬP", s1:"Việc truyền thông đưa tin nhiều hơn về 'nóng lên toàn cầu' sẽ giúp công chúng nhận thức được hiện tượng này.", s2:[["YES",0,"Bẫy suy diễn."],["NO",0,"Bài đọc chỉ khuyên đổi tên thuật ngữ thành 'global climate change', không bàn về số lượng tin tức trên truyền thông."],["NOT GIVEN",1,"Hoàn toàn không có thông tin về việc tăng thời lượng đưa tin (more media coverage) có giúp ích hay không."]], s3:"Đoạn F chỉ phân tích bản thân tên gọi 'global warming' gây hiểu lầm và gợi ý tên 'global climate change', tuyệt nhiên không nhắc đến 'more media coverage'. Chọn NOT GIVEN.", s4:"Loại YES và NO." },
+    { q:34, p:2, type:"select", prompt:"YES / NO / NOT GIVEN: <strong>Harvard debates should focus more on female scientists than male scientists.</strong>", opts:["YES","NO","NOT GIVEN"], ans:"NOT GIVEN", ev:"p3-G", loc:"Đoạn G (Passage 3)", qEn:"For several months, Harvard was tortured by empty debates over the relative intrinsic scientific abilities of men and women.", qVi:"Trong nhiều tháng, Harvard bị giày vò bởi những cuộc tranh cãi vô bổ về năng lực khoa học bẩm sinh tương đối giữa nam và nữ.", syn:"focus more on female scientists than male = KHÔNG ĐƯỢC ĐỀ CẬP", s1:"Các cuộc tranh luận ở Harvard nên tập trung nhiều hơn vào các nhà khoa học nữ hơn là các nhà khoa học nam.", s2:[["YES",0,"Không có trong bài."],["NO",0,"Tác giả không so sánh việc nên tập trung vào giới nào hơn."],["NOT GIVEN",1,"Bài đọc chỉ nói cuộc tranh luận xoay quanh năng lực giữa nam và nữ là vô bổ (empty debates), không hề nói nên tập trung vào nữ nhiều hơn nam."]], s3:"Không có bất kỳ câu nào trong Đoạn G khuyên rằng cuộc tranh luận tại Harvard nên tập trung vào nữ giới nhiều hơn nam giới. Chọn NOT GIVEN.", s4:"Loại YES và NO." },
+    { q:35, p:2, type:"select", prompt:"YES / NO / NOT GIVEN: <strong>Indirect scientific evidence is always less reliable than direct scientific evidence.</strong>", opts:["YES","NO","NOT GIVEN"], ans:"NO", ev:"p3-G", loc:"Đoạn G (Passage 3)", qEn:"The first would be to inculcate greater understanding and acceptance of indirect scientific evidence. The information from an unmanned space mission is no less legitimate than the information from one in which people are on board.", qVi:"Bước đầu tiên là nâng cao sự thấu hiểu và chấp nhận bằng chứng khoa học gián tiếp. Thông tin từ một sứ mệnh tàu vũ trụ không người lái có giá trị hợp pháp/đáng tin cậy không kém gì thông tin từ tàu có người lái.", syn:"no less legitimate = KHÔNG kém tin cậy hơn (Trái ngược với 'always less reliable')", s1:"Bằng chứng khoa học gián tiếp luôn kém tin cậy hơn bằng chứng khoa học trực tiếp.", s2:[["YES",0,"Ngược với quan điểm tác giả."],["NO",1,"Tác giả khẳng định bằng chứng gián tiếp (tàu không người lái) 'no less legitimate' (hợp pháp/đáng tin cậy không kém gì) bằng chứng trực tiếp."],["NOT GIVEN",0,"Sai vì có câu khẳng định trực tiếp trong Đoạn G."]], s3:"Cụm 'no less legitimate than' (đáng tin cậy không kém gì) ở cuối Đoạn G mâu thuẫn hoàn toàn với nhận định 'always less reliable than' (luôn kém tin cậy hơn). Chọn NO.", s4:"Loại YES và NOT GIVEN." },
+    { q:36, p:2, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): Firstly, ambiguous <strong>[36]</strong> __________ are the source of some misunderstandings.", ans:["word choices"], ev:"p3-C", loc:"Đoạn C (Passage 3)", qEn:"Ambiguous word choices are the source of some misunderstandings.", qVi:"Những lựa chọn từ ngữ mơ hồ là nguồn gốc của một số hiểu lầm.", syn:"Nguyên văn câu đầu Đoạn C", s1:"Đầu tiên, [36] những lựa chọn từ ngữ (word choices) mơ hồ là nguồn gốc của một số hiểu lầm.", s2:[["Từ loại",1,"Cụm danh từ số nhiều đứng sau tính từ 'ambiguous' và trước động từ 'are'."],["Đáp án chuẩn",1,"word choices (2 từ)."]], s3:"Câu đầu tiên của Đoạn C viết nguyên văn: 'Ambiguous word choices are the source of some misunderstandings'.", s4:"Điền đúng danh từ số nhiều 'word choices'." },
+    { q:37, p:2, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): Common people without proper training do not understand clearly or deeply a specific scientific meaning via the <strong>[37]</strong> __________ that scientists often employ.", ans:["colloquial terminology","terminology"], ev:"p3-C", loc:"Đoạn C (Passage 3)", qEn:"Scientists often employ colloquial terminology, which they then assign a specific meaning that is impossible to fathom without proper training.", qVi:"Các nhà khoa học thường sử dụng thuật ngữ thông tục, thứ mà họ gán cho một ý nghĩa cụ thể không thể hiểu thấu nếu không được đào tạo bài bản.", syn:"understand clearly or deeply = fathom", s1:"Người bình thường không được đào tạo bài bản không hiểu rõ ý nghĩa khoa học cụ thể thông qua [37] thuật ngữ thông tục (colloquial terminology) mà các nhà khoa học thường dùng.", s2:[["Từ loại",1,"Cụm danh từ đứng sau 'the' và làm tân ngữ cho mệnh đề quan hệ 'that scientists often employ'."],["Đáp án chuẩn",1,"colloquial terminology (2 từ)."]], s3:"Trong Đoạn C, động từ 'employ' đi trực tiếp với tân ngữ 'colloquial terminology'.", s4:"Giữ nguyên 2 từ 'colloquial terminology'." },
+    { q:38, p:2, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): For example, uncertainty is not about <strong>[38]</strong> __________ limitations on any particular [39]...", ans:["intrinsic"], ev:"p3-D", loc:"Đoạn D (Passage 3)", qEn:"But it is not about intrinsic limitations on any one particular measurement...", qVi:"Nhưng nó không phải là về những giới hạn bản chất đối với bất kỳ một phép đo cụ thể nào...", syn:"Nguyên văn Đoạn D", s1:"Ví dụ, sự bất định không phải là về những giới hạn [38] bản chất/nội tại (intrinsic)...", s2:[["Từ loại",1,"Tính từ đứng trước danh từ 'limitations'."],["Đáp án chuẩn",1,"intrinsic (1 từ)."]], s3:"Đối chiếu trực tiếp câu thứ 3 của Đoạn D: 'But it is not about intrinsic limitations on any one particular measurement'.", s4:"Điền tính từ 'intrinsic'." },
+    { q:39, p:2, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): ...not about [38] limitations on any particular <strong>[39]</strong> __________.", ans:["measurement"], ev:"p3-D", loc:"Đoạn D (Passage 3)", qEn:"But it is not about intrinsic limitations on any one particular measurement...", qVi:"Nhưng nó không phải là về những giới hạn bản chất đối với bất kỳ một phép đo cụ thể nào...", syn:"any particular = any one particular", s1:"...đối với bất kỳ [39] phép đo (measurement) cụ thể nào.", s2:[["Từ loại",1,"Danh từ số ít đứng sau 'any particular'."],["Đáp án chuẩn",1,"measurement (1 từ)."]], s3:"Điền danh từ 'measurement' đứng ngay sau 'particular' ở Đoạn D.", s4:"Lưu ý viết ở dạng số ít 'measurement' đúng theo văn bản." },
+    { q:40, p:2, type:"fill", prompt:"Summary (NO MORE THAN TWO WORDS): ...since scientists often evolved better versions of specific theories, a good example can be the theory of <strong>[40]</strong> __________.", ans:["general relativity","relativity"], ev:"p3-E", loc:"Đoạn E (Passage 3)", qEn:"Theories aren't necessarily shown to be correct or complete immediately. Even Einstein took the better part of a decade to develop the correct version of his theory of general relativity.", qVi:"Các lý thuyết không nhất thiết được chứng minh là đúng hoặc hoàn chỉnh ngay lập tức. Ngay cả Einstein cũng mất gần một thập kỷ để phát triển phiên bản đúng cho thuyết tương đối rộng của mình.", syn:"better versions = the correct version", s1:"...một ví dụ điển hình là thuyết [40] tương đối rộng (general relativity).", s2:[["Từ loại",1,"Cụm danh từ đứng sau 'the theory of'."],["Đáp án chuẩn",1,"general relativity (hoặc relativity)."]], s3:"Trong Đoạn E, sau cụm 'the correct version of his theory of' chính là 'general relativity'.", s4:"Điền 'general relativity' (2 từ) hoặc 'relativity' (1 từ) đều được chấm đúng." }
+];
+
+// ==================== STATE & RENDERING ====================
+let currentTab = 0;
+const userAnswers = {};
+let examLocked = false;
+
+function renderApp() {
+    renderPassage(currentTab);
+    renderQuestions(currentTab);
+}
+
+function renderPassage(idx) {
+    const p = passages[idx];
+    let html = `<div class="passage-header">${p.title}</div>`;
+    p.paras.forEach(item => {
+        html += `
+            <div class="para-card" id="${item.id}">
+                <div class="para-body">
+                    <span class="para-tag">Đoạn ${item.tag}</span>
+                    <span>${item.en}</span>
+                </div>
+                <button class="trans-toggle" onclick="toggleTrans('${item.id}-tr')">Mở dịch đoạn này 🌟</button>
+                <div class="smooth-collapse" id="${item.id}-tr">
+                    <div class="trans-content"><strong>🇻🇳 Bản dịch:</strong> ${item.vi}</div>
+                </div>
+            </div>
+        `;
+    });
+    document.getElementById('passage-area').innerHTML = html;
+
+    let gHtml = `<h3 style="color:var(--purple); margin-bottom:10px; font-weight:900;">📚 BẢNG TỪ VỰNG HỌC THUẬT B2–C2 (50 TỪ) - PASSAGE ${idx + 1}</h3>
+        <table class="glossary-table">
+            <thead>
+                <tr><th>#</th><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th><th>Synonym trong bài & câu hỏi</th></tr>
+            </thead>
+            <tbody>`;
+    p.vocab.forEach((v, i) => {
+        gHtml += `<tr><td>${i + 1}</td><td><strong>${v[0]}</strong></td><td><em>${v[1]}</em></td><td>${v[2]}</td><td>${v[3]}</td></tr>`;
+    });
+    gHtml += `</tbody></table>`;
+    document.getElementById('glossary-area').innerHTML = gHtml;
+}
+
+function renderQuestions(idx) {
+    const list = questions.filter(item => item.p === idx);
+    let html = '';
+    list.forEach(item => {
+        const saved = userAnswers[item.q];
+        html += `<div class="q-card" id="qcard-${item.q}">
+            <div class="q-title"><span class="q-badge">Câu ${item.q}</span> ${item.prompt}</div>`;
+
+        if (item.type === 'abcd') {
+            const shuffled = item._shuffled || (item._shuffled = shuffleArray(item.opts));
+            const letters = ['A', 'B', 'C', 'D'];
+            html += `<div class="abcd-grid">`;
+            shuffled.forEach((opt, oIdx) => {
+                let cls = 'opt-card';
+                let badge = '';
+                if (saved) {
+                    if (opt.id === item.ans) {
+                        cls += ' correct';
+                        badge = `<span class="pill-right">✓ ĐÁP ÁN ĐÚNG</span>`;
+                    } else if (saved.val === opt.id) {
+                        cls += ' wrong';
+                    }
+                }
+                html += `
+                    <button class="${cls}" ${examLocked ? 'disabled' : ''} onclick="answerABCD(${item.q}, '${opt.id}')">
+                        <div class="opt-left">
+                            <span class="opt-char">${letters[oIdx]}</span>
+                            <span>${opt.text}</span>
+                        </div>
+                        ${badge}
+                    </button>`;
+            });
+            html += `</div>`;
+        } else if (item.type === 'select') {
+            let cls = 'game-select';
+            if (saved) cls += saved.ok ? ' correct' : ' wrong';
+            html += `<div class="input-row">
+                <select class="${cls}" ${examLocked ? 'disabled' : ''} onchange="answerSelect(${item.q}, this.value)">
+                    <option value="">-- Chọn đáp án --</option>`;
+            item.opts.forEach(o => {
+                const code = o.split('.')[0].trim();
+                const sel = (saved && saved.val === code) ? 'selected' : '';
+                html += `<option value="${code}" ${sel}>${o}</option>`;
+            });
+            html += `</select>
+                ${saved ? (saved.ok ? '<span style="color:var(--green);font-weight:900;">✓ Chính xác!</span>' : `<span style="color:var(--red);font-weight:900;">✗ Sai (Đáp án: ${item.ans})</span>`) : ''}
+            </div>`;
+        } else if (item.type === 'fill') {
+            let cls = 'game-input';
+            if (saved) cls += saved.ok ? ' correct' : ' wrong';
+            const val = saved ? saved.val : '';
+            html += `<div class="input-row">
+                <input type="text" id="inp-${item.q}" class="${cls}" value="${val}" placeholder="Nhập từ cần điền..." ${examLocked ? 'disabled' : ''} onkeydown="if(event.key==='Enter') answerFill(${item.q})">
+                <button class="btn-3d teal" ${examLocked ? 'disabled' : ''} onclick="answerFill(${item.q})">Check ✓</button>
+                ${saved ? (saved.ok ? '<span style="color:var(--green);font-weight:900;">✓ Đúng!</span>' : `<span style="color:var(--red);font-weight:900;">✗ Đáp án: ${item.ans[0]}</span>`) : ''}
+            </div>`;
+        }
+
+        // 4-Step Explanation Box (Matching image_c19851.png)
+        const isOpen = saved ? 'open' : '';
+        html += `
+            <div class="smooth-collapse ${isOpen}" id="exp-${item.q}">
+                <div class="exp-box">
+                    <div class="exp-head">
+                        <span>⚡ GIẢI THÍCH CHI TIẾT (MS LÊ HẰNG ENGLISH)</span>
+                        <button class="btn-3d" style="padding:4px 10px; font-size:0.76rem;" onclick="locateEvidence('${item.ev}')">🖱️ Định vị dẫn chứng (${item.loc})</button>
+                    </div>
+                    <div class="step1">💬 <strong>Bước 1 - Dịch nghĩa toàn câu:</strong> "${item.s1}"</div>
+                    <div style="font-weight:800; font-size:0.84rem;">Bước 2 - Phân tích từ vựng & các phương án:</div>
+                    <div class="step2-grid">
+                        ${item.s2.map(st => `
+                            <div class="step2-card">
+                                <strong style="color:#0984e3;">${st[0]}:</strong>
+                                <span class="${st[1] ? 'badge-ans' : 'badge-dist'}">${st[1] ? 'Đáp án đúng' : 'Phương án nhiễu'}</span>
+                                ${st[2]}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="step3"><strong>Bước 3 - ✅ TẠI SAO ĐÚNG?</strong> ${item.s3}</div>
+                    <div class="step4"><strong>Bước 4 - ❌ TẠI SAO CÁC ĐÁP ÁN CÒN LẠI SAI / LƯU Ý BẪY:</strong> ${item.s4}</div>
+                    <div class="evidence-meta">
+                        <div><strong>1. ĐÁP ÁN CHUẨN:</strong> <span style="color:var(--green); font-weight:900;">${Array.isArray(item.ans) ? item.ans.join(' / ') : item.ans}</span></div>
+                        <div><strong>2. ĐOẠN CHỨA ĐÁP ÁN (${item.loc}):</strong> <em>"${item.qEn}"</em></div>
+                        <div><strong>3. DỊCH NGHĨA DẪN CHỨNG:</strong> "${item.qVi}"</div>
+                        <div><strong>4. CỤM TỪ ĐỒNG NGHĨA (SYNONYMS):</strong> <span style="color:var(--purple); font-weight:800;">${item.syn}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('questions-area').innerHTML = html;
+}
+
+// ==================== INTERACTION HANDLERS ====================
+function toggleTrans(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('open');
+}
+
+function answerABCD(qNum, chosenId) {
+    if (examLocked) return;
+    const item = questions.find(x => x.q === qNum);
+    const ok = (chosenId === item.ans);
+    userAnswers[qNum] = { val: chosenId, ok };
+    playFeedbackSound(ok);
+    if (ok) fireConfetti();
+    updateProgress();
+    renderQuestions(currentTab);
+}
+
+function answerSelect(qNum, val) {
+    if (examLocked || !val) return;
+    const item = questions.find(x => x.q === qNum);
+    const ok = (val === item.ans);
+    userAnswers[qNum] = { val, ok };
+    playFeedbackSound(ok);
+    if (ok) fireConfetti();
+    updateProgress();
+    renderQuestions(currentTab);
+}
+
+function answerFill(qNum) {
+    if (examLocked) return;
+    const inp = document.getElementById(`inp-${qNum}`);
+    if (!inp) return;
+    const raw = inp.value.trim();
+    if (!raw) return;
+    const item = questions.find(x => x.q === qNum);
+    const ok = item.ans.some(a => a.toLowerCase() === raw.toLowerCase());
+    userAnswers[qNum] = { val: raw, ok };
+    playFeedbackSound(ok);
+    if (ok) fireConfetti();
+    updateProgress();
+    renderQuestions(currentTab);
+}
+
+function locateEvidence(paraId) {
+    const target = document.getElementById(paraId);
+    if (!target) return;
+    document.querySelectorAll('.para-card').forEach(c => c.classList.remove('located'));
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.add('located');
+    setTimeout(() => target.classList.remove('located'), 3000);
+}
+
+function switchTab(idx) {
+    currentTab = idx;
+    document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+    renderApp();
+    document.getElementById('left-pane').scrollTop = 0;
+    document.getElementById('right-pane').scrollTop = 0;
+}
+
+function updateProgress() {
+    const done = Object.keys(userAnswers).length;
+    const pct = Math.round((done / 40) * 100);
+    document.getElementById('prog-label').textContent = `${done}/40 (${pct}%)`;
+    document.getElementById('prog-bar').style.width = `${pct}%`;
+}
+
+// ==================== PASTEL PURPLE SELECTION HIGHLIGHTER ====================
+document.addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed) return;
+    const text = sel.toString().trim();
+    if (text.length < 2) return;
+    try {
+        const range = sel.getRangeAt(0);
+        const leftPane = document.getElementById('left-pane');
+        const rightPane = document.getElementById('right-pane');
+        if (!leftPane.contains(range.commonAncestorContainer) && !rightPane.contains(range.commonAncestorContainer)) return;
+        const span = document.createElement('span');
+        span.className = 'pastel-hl';
+        span.title = 'Click để xóa highlight';
+        span.onclick = function(e) {
+            e.stopPropagation();
+            const parent = this.parentNode;
+            while (this.firstChild) parent.insertBefore(this.firstChild, this);
+            parent.removeChild(this);
+        };
+        range.surroundContents(span);
+        sel.removeAllRanges();
+    } catch (e) {}
+});
+
+// ==================== 20:00 COUNTDOWN TIMER ====================
+let timeRemaining = 20 * 60;
+let timerInterval = null;
+let timerRunning = false;
+
+function toggleTimer() {
+    const btn = document.getElementById('timer-btn');
+    if (!timerRunning) {
+        timerRunning = true;
+        btn.textContent = '⏸️ TẠM DỪNG';
+        timerInterval = setInterval(() => {
+            timeRemaining--;
+            const m = String(Math.floor(timeRemaining / 60)).padStart(2, '0');
+            const s = String(timeRemaining % 60).padStart(2, '0');
+            document.getElementById('timer-val').textContent = `${m}:${s}`;
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                examLocked = true;
+                btn.textContent = '⌛ ĐÃ HẾT GIỜ';
+                btn.disabled = true;
+                alert('Đã hết giờ làm bài, vui lòng nộp bài nhé!');
+                renderQuestions(currentTab);
+            }
+        }, 1000);
+    } else {
+        timerRunning = false;
+        clearInterval(timerInterval);
+        btn.textContent = '▶️ TIẾP TỤC';
+    }
+}
+
+// ==================== SUBMIT & IELTS BAND CONVERSION ====================
+function getIeltsBand(score) {
+    if (score >= 39) return 9.0;
+    if (score >= 37) return 8.5;
+    if (score >= 35) return 8.0;
+    if (score >= 33) return 7.5;
+    if (score >= 30) return 7.0;
+    if (score >= 27) return 6.5;
+    if (score >= 23) return 6.0;
+    if (score >= 20) return 5.5;
+    if (score >= 16) return 5.0;
+    if (score >= 13) return 4.5;
+    if (score >= 10) return 4.0;
+    if (score >= 7) return 3.5;
+    if (score >= 5) return 3.0;
+    if (score >= 3) return 2.5;
+    return 2.0;
+}
+
+function submitExam() {
+    let correctCount = 0;
+    Object.values(userAnswers).forEach(a => { if (a.ok) correctCount++; });
+    const pct = Math.round((correctCount / 40) * 100);
+    const band = getIeltsBand(correctCount);
+
+    document.getElementById('res-band').textContent = band.toFixed(1);
+    document.getElementById('res-count').textContent = `${correctCount} / 40`;
+    document.getElementById('res-pct').textContent = `${pct}%`;
+
+    let msg = '';
+    if (pct < 60) {
+        msg = '💌 <strong>Lời nhắn từ Ms Lê Hằng:</strong><br>“Điểm lần này chưa cao lắm, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!”';
+    } else if (pct < 90) {
+        msg = '🌟 <strong>Lời nhắn từ Ms Lê Hằng:</strong><br>“Con đã có tiến bộ khá ổn rồi, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!”';
+    } else {
+        msg = '🏆 <strong>Lời nhắn từ Ms Lê Hằng:</strong><br>“Làm tốt lắm, con cố gắng ring điểm 10 ở lần sau nha!”';
+        fireConfetti();
+    }
+    document.getElementById('res-msg').innerHTML = msg;
+    document.getElementById('score-modal').style.display = 'flex';
+}
+
+// ==================== CUSTOM VERBATIM TEXT IMPORTER ====================
+function openCustomTextModal() {
+    const currentParas = passages[currentTab].paras.map(p => p.en).join('\n\n');
+    document.getElementById('custom-textarea').value = currentParas;
+    document.getElementById('custom-modal').style.display = 'flex';
+}
+
+function applyCustomText() {
+    const raw = document.getElementById('custom-textarea').value.trim();
+    if (!raw) return;
+    const blocks = raw.split(/\n\s*\n/);
+    blocks.forEach((b, idx) => {
+        if (passages[currentTab].paras[idx]) {
+            passages[currentTab].paras[idx].en = b.trim();
+        }
+    });
+    document.getElementById('custom-modal').style.display = 'none';
+    renderPassage(currentTab);
+}
+
+// Initialize Application
+renderApp();
+</script>
+</body>
+</html>
